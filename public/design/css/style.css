@@ -1,0 +1,12 @@
+body { padding: 50px; }
+#content, #form_content { padding: 30px 15px; }
+#table_nav, #form_content { text-align: center; }
+#form_content button { margin: 10px; }
+#search_box { margin-bottom: 10px; }
+#form_content h3 { margin-top: 0px; }
+#form_content .alert { text-align: left; }
+
+#form_content .form-group {
+  margin: 0 auto;
+  float: none;
+}

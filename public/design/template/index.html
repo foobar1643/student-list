@@ -1,0 +1,63 @@
+<div id="content">
+  <form method="get">
+  <div class="row" id="search_box">
+    <div class="col-lg-4 col-lg-offset-4">
+      <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Поиск</button>
+          </span>
+          <input type="text" name="search" class="form-control" placeholder="Введите текст для поиска">
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div>
+</form>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Список студентов</div>
+    <table class="table">
+      <tr>
+        <th><a href="<?php print($this->link_builder->get_link_for_sorting('name', $this->view_settings->page_data->fl_sorting_type)); ?>">Имя</a></th>
+        <th><a href="<?php print($this->link_builder->get_link_for_sorting('surname', $this->view_settings->page_data->fl_sorting_type)); ?>">Фамилия</a></th>
+        <th><a href="<?php print($this->link_builder->get_link_for_sorting('sgroup', $this->view_settings->page_data->fl_sorting_type)); ?>">Группа</a></th>
+        <th><a href="<?php print($this->link_builder->get_link_for_sorting('rating', $this->view_settings->page_data->fl_sorting_type)); ?>">Баллы</a></th>
+      </tr>
+      <?php for($i = 0; $i < count($this->view_settings->page_data->student); $i++): ?>
+        <tr>
+          <td><?php print($this->view_settings->page_data->student[$i]->name) ?></td>
+          <td><?php print($this->view_settings->page_data->student[$i]->surname) ?></td>
+          <td><?php print($this->view_settings->page_data->student[$i]->group) ?></td>
+          <td><?php print($this->view_settings->page_data->student[$i]->rating) ?></td>
+        </tr>
+      <?php endfor; ?>
+    </table>
+  </div>
+  <?php if($this->view_settings->page_data->total_pages > 1): ?>
+  <nav id="table_nav">
+    <ul class="pagination pagination-lg">
+    <!--  <li>
+        <a href="#" aria-label="Предыдущая">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>!-->
+
+      <!-- Page nubmers start !-->
+      <?php for($i = 1; $i <= $this->view_settings->page_data->total_pages; $i++): ?>
+        <li "<?php if($i == $this->view_settings->page_data->current_page): ?> class='active' <?php endif; ?>">
+          <a href="<?php print($this->link_builder->get_link_for_page($i)); ?>"><?php print($i); ?></a>
+        </li>
+      <?php endfor; ?>
+      <!-- Page nubmers end !-->
+
+      <!--<li>
+        <a href="#" aria-label="Следующая">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>!-->
+    </ul>
+  </nav>
+  <?php endif; ?>
+</div>
+<script src="design/js/jquery.min.js"></script>
+<script src="design/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
