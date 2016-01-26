@@ -1,11 +1,14 @@
 <?php
+require_once("../vendor/autoload.php");
 
-require_once("../app/AutoLoader.php");
+use \App\Controller\ControllerForm;
+use \App\ExceptionHandler;
 
 $app = new ControllerForm();
 
-if($_POST) $app->process_post_request($_POST);
-
-if($_GET) $app->process_get_request($_GET);
-
-$app->run();
+try {
+    $app->run();
+} catch(PDOException $e) {
+    $handler = new ExceptionHandler();
+    $handler->handleException($e);
+}

@@ -1,6 +1,12 @@
 <?php
 
-class ControllerFiller extends AppCore {
+namespace App\Controller;
+use \App\Model\Student;
+use \App\Database\StudentDataGateway;
+use \App\ExceptionHandler;
+use \App\Bootstrap as Bootstrap;
+
+class ControllerFiller {
 
   private $names;
   private $surnames;
@@ -10,16 +16,14 @@ class ControllerFiller extends AppCore {
   private $group_source;
 
   public function __construct() {
-    $this->page = new ViewFiller();
     $this->data = array("names" => array(), "surnames" => array());
     $this->group_source = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-    parent::__construct();
-    $this->student_gateway = new StudentDataGateway($this->pdo);
+    $this->student_gateway = new StudentDataGateway(Bootstrap::getPDO());
   }
 
   private function read_names() {
-    $this->names = fopen("../names.txt", "r");
-    $this->surnames = fopen("../surnames.txt", "r");
+    $this->names = fopen("../data/names.txt", "r");
+    $this->surnames = fopen("../data/surnames.txt", "r");
     if($this->names && $this->surnames) {
       while(($line = fgets($this->names)) !== false) array_push($this->data["names"], $line);
       while(($line = fgets($this->surnames)) !== false) array_push($this->data["surnames"], $line);
@@ -35,24 +39,29 @@ class ControllerFiller extends AppCore {
       $this->student = new Student();
       $this->student->name = $this->data["names"][rand(0, count($this->data["names"])-1)];
       $this->student->surname = $this->data["surnames"][rand(0, count($this->data["surnames"])-1)];
-      if(rand(0,1) == 0) $this->student->gender = "m";
-      else $this->student->gender = "f";
-      for($x = 0; $x < rand(3, 4); $x++) $this->student->group .= $this->group_source[rand(0, count($this->group_source))];
+      if(rand(0,1) == 0) $this->student->gender = "male";
+      else $this->student->gender = "female";
+      for($x = 0; $x < rand(3, 4); $x++) $this->student->sgroup .= $this->group_source[rand(0, count($this->group_source))];
       $this->student->email = "datafiller@gmail.com";
-      $this->student->byear = "19" . rand(0,9) . rand(0,9);
-      $this->student->status = "mov";
-      $this->student->rating = rand(0,100);
+      $this->student->byear = "19" . rand(1,9) . rand(0,9);
+      $this->student->status = "resident";
+      $this->student->rating = rand(1,100);
       $this->student_gateway->add_student($this->student);
     }
   }
 
-  public function process_post_request($post_data) {
-    $this->fill_database($post_data['count_field']);
-    $this->view_settings->success = $post_data['count_field'];
-  }
-
   public function run() {
-    $this->page->set_display_settings($this->view_settings);
-    $this->page->show_page();
+      if($_POST) {
+          if($_POST['count_field'] < 100 && $_POST['count_field'] > 0) {
+              $this->fill_database($_POST['count_field']);
+              $viewSettings['success'] = $_POST['count_field'];
+          } else {
+              $viewSettings['error'] = true;
+          }
+      }
+      $viewSettings['pageTitle'] = "Заполнитель базы данных";
+      $viewSettings['navTitle'] = "filler";
+      include_once("../templates/header.html");
+      include_once("../templates/filler.html");
   }
 }

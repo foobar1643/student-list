@@ -1,6 +1,8 @@
 <?php
 
-class LinkBuilder {
+namespace App\Model\Helper;
+
+class LinkHelper {
 
   public $filename;
   public $is_paging;
@@ -11,11 +13,10 @@ class LinkBuilder {
   public $sort_key;
   public $sort_type;
 
-  public function __construct() {
-
-  }
-
-  public function get_link_for_sorting($sort_key, $sort_type) {
+  public function get_link_for_sorting($sort_key) {
+    $sort_type = $this->sort_type;
+    if($sort_type == "desc") $sort_type = "asc";
+    else $sort_type = "desc";
     $link = $this->filename . "?sort=" . $sort_key . "&type=" . $sort_type;
     if($this->is_paging) {
       $link .= "&page=" . $this->page_number;

@@ -1,0 +1,51 @@
+<div id="content">
+  <form method="get">
+  <div class="row" id="search_box">
+    <div class="col-lg-4 col-lg-offset-4">
+      <div class="input-group">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Поиск</button>
+          </span>
+          <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы">
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div>
+</form>
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Список студентов</div>
+    <table class="table">
+      <tr>
+        <th><a href="<?= $linkBuilder->get_link_for_sorting('name') ?>">Имя</a></th>
+        <th><a href="<?= $linkBuilder->get_link_for_sorting('surname') ?>">Фамилия</a></th>
+        <th><a href="<?= $linkBuilder->get_link_for_sorting('sgroup') ?>">Группа</a></th>
+        <th><a href="<?= $linkBuilder->get_link_for_sorting('rating') ?>">Баллы</a></th>
+      </tr>
+      <?php for($i = 0; $i < count($viewSettings['students']); $i++): ?>
+        <tr>
+          <td><?= $viewSettings['students'][$i]->name ?></td>
+          <td><?= $viewSettings['students'][$i]->surname ?></td>
+          <td><?= $viewSettings['students'][$i]->sgroup ?></td>
+          <td><?= $viewSettings['students'][$i]->rating ?></td>
+        </tr>
+      <?php endfor; ?>
+    </table>
+  </div>
+  <?php if($viewSettings['totalPages'] > 1): ?>
+  <nav id="table_nav">
+    <ul class="pagination pagination-lg">
+
+      <!-- Page nubmers start !-->
+      <?php for($i = 1; $i <= $viewSettings['totalPages']; $i++): ?>
+        <li "<?php if($i == $viewSettings['currentPage']): ?> class='active' <?php endif; ?>">
+          <a href="<?= $linkBuilder->get_link_for_page($i) ?>"><?= $i ?></a>
+        </li>
+      <?php endfor; ?>
+      <!-- Page nubmers end !-->
+
+    </ul>
+  </nav>
+  <?php endif; ?>
+</div>
+</body>
+</html>

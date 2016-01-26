@@ -1,0 +1,83 @@
+<div id="form_content">
+  <?php if($viewSettings['error']): ?>
+    <div class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Ошибка:</span>
+        Проверьте правильность вводимых данных и попробуйте еще раз.
+    </div>
+  <?php endif; ?>
+  <?php if($viewSettings['success']): ?>
+    <div class="alert alert-success" role="alert">
+      <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+      Форма заполнена успешно.
+    </div>
+  <?php endif; ?>
+  <h3>Добавление иформации</h3>
+  <form method="post">
+    <input type="hidden" name="csrf_field" value="<?php print($viewSettings['csrf_token']) ?>">
+    <input type="hidden" name="id_field" value="<?php print($viewSettings['student']->id) ?>">
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['name']): ?> has-error <?php endif; ?>">
+        <label for="name_field">Имя</label>
+        <input type="text" class="form-control" name="name_field" id="name_field" placeholder="Имя"
+          value="<?php if($viewSettings['student']->name): print($viewSettings['student']->name); endif; ?>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['surname']): ?> has-error <?php endif; ?>">
+        <label for="surname_field">Фамилия</label>
+        <input type="text" class="form-control" name="surname_field" id="surname_field" placeholder="Фамилия"
+          value="<?php if($viewSettings['student']->surname): print($viewSettings['student']->surname); endif; ?>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="gender_field">Пол</label>
+        <select class="form-control" name="gender_field" id="gender_field">
+          <option value="male" "<?php if($viewSettings['student']->gender == 'male'): ?> selected <?php endif; ?>">М</option>
+          <option value="female" "<?php if($viewSettings['student']->gender == 'female'): ?> selected <?php endif; ?>">Ж</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['group']): ?> has-error <?php endif; ?>">
+        <label for="group_field">Группа</label>
+        <input type="text" class="form-control" name="sgroup_field" id="group_field" placeholder="Группа"
+          value="<?php if($viewSettings['student']->sgroup): print($viewSettings['student']->sgroup); endif; ?>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['email']): ?> has-error <?php endif; ?>">
+        <label for="email_field">Адрес email</label>
+        <input type="email" class="form-control" name="email_field" id="email_field" placeholder="Email"
+          value="<?php if($viewSettings['student']->email): print($viewSettings['student']->email); endif; ?>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['byear']): ?> has-error <?php endif; ?>">
+        <label for="byear_field">Год рождения</label>
+        <input type="number" class="form-control" name="byear_field" id="byear_field" placeholder="Год рождения"
+          value="<?php if($viewSettings['student']->byear): print($viewSettings['student']->byear); endif; ?>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="location_field">Локация</label>
+        <select class="form-control" name="status_field" id="location_field">
+          <option value="nonresident" "<?php if($viewSettings['student']->status == 'nonresident'): ?> selected <?php endif; ?>">Приезжий</option>
+          <option value="resident" "<?php if($viewSettings['student']->status == 'resident'): ?> selected <?php endif; ?>">Иногородний</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-3 <?php if($viewSettings['error']['rating']): ?> has-error <?php endif; ?>">
+        <label for="rating_field">Балы ЕГЭ</label>
+          <input type="number" name="rating_field" class="form-control" id="rating_field" placeholder="ЕГЭ"
+            value="<?php if(isset($viewSettings['student']->rating)): print($viewSettings['student']->rating); endif;  ?>" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-default">Подтвердить</button>
+  </form>
+</div>
+</body>
+</html>

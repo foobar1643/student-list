@@ -1,6 +1,9 @@
 <?php
 
-class TablePager {
+namespace App\Model\Helper;
+use \App\AppConfig;
+
+class PaginationHelper {
 
   private $records;
   private $records_per_page;
@@ -28,7 +31,7 @@ class TablePager {
   }
 
   public function get_offset_for_page($page) {
-    for($i = 1; $i < $page; $i++) $offset = $offset + 15;
+    for($i = 1; $i < $page; $i++) $offset = $offset + $this->records_per_page;
     return $offset;
   }
 

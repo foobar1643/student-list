@@ -1,15 +1,18 @@
 <?php
 
+namespace App\Model;
+
 class Student {
 
   public $id;
   public $name;
   public $surname;
   public $gender;
-  public $group;
+  public $sgroup;
   public $email;
   public $byear;
   public $status;
   public $rating;
+  public $token;
 
 }
