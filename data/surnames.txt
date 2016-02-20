@@ -21,7 +21,7 @@ Litton
 AntczakBoukoms
 Raimondi
 Bier
-arnold
+Arnold
 Caine
 Melvoin
 Freeman
@@ -69,7 +69,7 @@ Mossmann
 Brookshire
 Blackbourn
 Nebebe
-Van Stone
+Van-Stone
 Zaleskas
 Weiskel
 Pascocci
@@ -91,7 +91,7 @@ Delvy
 Crim
 Bly
 Slaner
-adams
+Adams
 Mesnikoff
 JaimesFreyre
 Nevins
@@ -134,7 +134,7 @@ Mathieu
 Gaudet
 Valsecchi
 Sobeck
-patterson
+Patterson
 Hemingway
 Chien
 Klasson
@@ -148,7 +148,7 @@ Belanger
 LindoFuentes
 Wiens
 Mcpherson
-avila
+Avila
 Paroli
 Ketcham
 Ginsberg
@@ -194,7 +194,7 @@ Radovsky
 Sennett
 Mingle
 Bol
-wright
+Wright
 Eccles
 Gallus
 Maldonardo
@@ -224,7 +224,7 @@ Congreve
 Ransom
 Csuja
 Anglin
-miller
+Miller
 Finco
 Osler
 Goliger
@@ -259,7 +259,7 @@ Webb
 Chernin
 Jennison
 Adourian
-cunningham
+Cunningham
 Pryslak
 Akchurin
 Sayers
@@ -389,7 +389,7 @@ Berenguier
 Clare
 Witschi
 Lori
-weber
+Weber
 Glass
 Burpee
 Kany
@@ -466,7 +466,7 @@ Brownell
 Leckie
 Samonides
 Bruskin
-brown
+Brown
 Flemming
 Seow
 Bielli
@@ -500,7 +500,7 @@ Wolcowitz
 Wade
 Blanchard
 Brzoza
-martinez
+Martinez
 Ross
 Newburger
 Howey
@@ -522,9 +522,9 @@ Chodosh
 Paradis
 Ibsen
 Wolbach
-de Veyra
+De Veyra
 Mahan
-stafford
+Stafford
 Archer
 Mccarthy
 Gabor
@@ -608,7 +608,7 @@ Sutradhar
 Shakhnovich
 Olsthoorn
 Irion
-sullivan
+Sullivan
 Eromin
 Pellish
 Dorfman
@@ -675,7 +675,7 @@ Shanker
 Venne
 Rammelkamp
 Horah
-mcdonald
+Mcdonald
 Humbert
 Gstohl
 Bernstein
@@ -776,7 +776,7 @@ Buzzell
 Camilli
 Ha
 Hulbert
-morris
+Morris
 Boettcher
 Burris
 Ownsby
@@ -943,7 +943,7 @@ Berthiaume
 Bebchuk
 Zhang
 Perrone
-de la Cruz
+De la Cruz
 Agrawal
 Joshi
 Mehrmann
@@ -986,9 +986,9 @@ Perella
 Kokkinis
 Malone
 Caulton
-day
+Day
 Giles
-roberts
+Roberts
 Mellichamp
 Hochberg
 Barros
@@ -1101,7 +1101,7 @@ Lerner
 Brasini
 Passaquindici
 Callinan
-le Cam
+Le Cam
 Frader
 Slade
 Kemmerer
@@ -1235,8 +1235,8 @@ Stehle
 Favretto
 Nummi
 Centrella
-brooks
-johnson
+Brooks
+Johnson
 Myrvold
 Fairgood
 Kne
@@ -1382,7 +1382,7 @@ Gombosi
 Wadlington
 Keirstead
 Iuculano
-snyder
+Snyder
 Arroyo
 Min
 Zeitlin
@@ -1465,7 +1465,7 @@ Ettinger
 Mchugh
 Distefano
 Gladen
-burke
+Burke
 Papineau
 Garvey
 Cushman
@@ -1575,7 +1575,7 @@ Parenti
 Awakuni
 Corrado
 Ilan
-kelley
+Kelley
 Flanigan
 McCarthy
 Kouriatchev
@@ -1649,7 +1649,7 @@ Maalouf
 Ask
 Angus
 Ruggeri
-davis
+Davis
 Alfred
 Weinberg
 Lovison
@@ -1681,7 +1681,7 @@ Mccorkle
 Humenek
 Yokota
 Gersho
-turner
+Turner
 Henneman
 Babb
 Ciampa
@@ -1717,7 +1717,7 @@ Haley
 Samorodnitsky
 De Gruttola
 Donnellon
-de SaintExupery
+De SaintExupery
 Tallent
 Parmenter
 Frair
@@ -1763,7 +1763,7 @@ Pai
 Seale
 Dimopoulos
 Prosser
-williams
+Williams
 Bonifazi
 Lyng
 Lockhart
@@ -1785,9 +1785,9 @@ Levin
 Pickwoad
 Pels
 Cullinane
-robinson
+Robinson
 Karff
-de Cruz
+De Cruz
 Thoreau
 Gaggiotti
 Zurn
@@ -1879,7 +1879,7 @@ Neufeldt
 Sepulveda
 Kayfetz
 Carnahan
-young
+Young
 Thurman
 Reynales
 Mcconway
@@ -1964,7 +1964,7 @@ Foulley
 AbromsonLeeman
 Ruchames
 Vayner
-randolph
+Randolph
 Luther
 Ongaro
 Rampichini
@@ -2027,7 +2027,7 @@ Conner
 Mazzeo
 Maynard
 Ansell
-lEnclos
+Lenclos
 Evangelous
 Dugan
 Bernal
@@ -2122,9 +2122,9 @@ Salvaterra
 Oden
 Britz
 Ohara
-sanders
+Sanders
 Marking
-kennedy
+Kennedy
 Shraiman
 Cedarbaum
 Barcus
@@ -2194,7 +2194,7 @@ Goel
 Cobuzzi
 KelleyMilburn
 Lachenbruch
-nelson
+Nelson
 Shaban
 Prizer
 Traxler
@@ -2212,7 +2212,7 @@ Adicho
 Hieb
 Witkowski
 Miccile
-smith
+Smith
 Contini
 Saporta
 Caldwell
@@ -2276,7 +2276,7 @@ Kaminski
 Africa
 Moir
 Remundo
-bishop
+Bishop
 Carlin
 Fogerty
 Irwin
@@ -2316,7 +2316,7 @@ Mitchell
 Broom
 DavisonKeis
 Bosch
-simpson
+Simpson
 Javier
 Palerm
 Griliches
@@ -2384,7 +2384,7 @@ Koss
 Shuer
 Descartes
 Hilyard
-anderson
+Anderson
 Pigeon
 Carlstein
 Davo
@@ -2406,7 +2406,7 @@ Knipe
 Fabbris
 Flournoy
 Mahler
-de Lima
+De Lima
 Urban
 JosephMccarthy
 Niven
@@ -2434,7 +2434,7 @@ Cordue
 Hurwit
 BelinCollart
 Strain
-crawford
+Crawford
 Milton
 Dunbrack
 Chaganty
@@ -2463,7 +2463,7 @@ Dzuro
 Nadherny
 Daristotle
 Fulton
-gonzales
+Gonzales
 Weisstein
 Middle
 Gryan
@@ -2480,18 +2480,18 @@ KupiecWeglinski
 Chmelka
 Rodburg
 Weissglass
-cooper
+Cooper
 Heisenberg
 Mcgoldrick
 Joung
 Lanzarotta
 Greene
-springer
+Springer
 Raftery
 Reggiani
 Vedaldi
 Jaccarino
-obrien
+Obrien
 Willner
 Lorenzini
 Pritsinas
@@ -2539,7 +2539,7 @@ Kroncke
 Hanson
 Maloley
 Hahnfeld
-butler
+Butler
 Ferreira
 Devita
 Gozzi
@@ -2575,7 +2575,7 @@ Kronecker
 Helliwell
 Collura
 Mohtashami
-alvarez
+Alvarez
 Frank
 Sprat
 Sponheim
@@ -2662,7 +2662,7 @@ Qian
 Belser
 FlynnBedrosian
 Brecher
-hill
+Hill
 Churchill
 Balaban
 Karlen
@@ -2670,7 +2670,7 @@ Gautier
 Pagano
 Joanes
 Robinson
-de Balzac
+De Balzac
 Peppard
 Monien
 Pilot
@@ -2739,7 +2739,7 @@ Taborsky
 Prat
 ComptonWilcher
 Gebhardt
-spafford
+Spafford
 AshleyPitt
 Hiremath
 Bourland
@@ -2768,7 +2768,7 @@ Fick
 Sands
 Clougherty
 Frohock
-wells
+Wells
 Carlisle
 Rahilly
 Giaimo
@@ -2971,7 +2971,7 @@ Feinberg
 Mahmood
 Zweibel
 Labell
-peterson
+Peterson
 Hubacek
 Shearer
 Virgil

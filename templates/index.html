@@ -1,4 +1,12 @@
+<?php include_once("header.html") ?>
 <div id="content">
+    <?php if($viewSettings['error']): ?>
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Ошибка:</span>
+          Вы не заполнили поле поиска.
+      </div>
+    <?php endif; ?>
   <form method="get">
   <div class="row" id="search_box">
     <div class="col-lg-4 col-lg-offset-4">
@@ -6,7 +14,7 @@
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit">Поиск</button>
           </span>
-          <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы">
+          <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы" required>
       </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
   </div>
@@ -16,29 +24,29 @@
     <div class="panel-heading">Список студентов</div>
     <table class="table">
       <tr>
-        <th><a href="<?= $linkBuilder->get_link_for_sorting('name') ?>">Имя</a></th>
-        <th><a href="<?= $linkBuilder->get_link_for_sorting('surname') ?>">Фамилия</a></th>
-        <th><a href="<?= $linkBuilder->get_link_for_sorting('sgroup') ?>">Группа</a></th>
-        <th><a href="<?= $linkBuilder->get_link_for_sorting('rating') ?>">Баллы</a></th>
+        <th><a href="<?= $linkBuilder->getLinkForSorting('name') ?>">Имя</a></th>
+        <th><a href="<?= $linkBuilder->getLinkForSorting('surname') ?>">Фамилия</a></th>
+        <th><a href="<?= $linkBuilder->getLinkForSorting('sgroup') ?>">Группа</a></th>
+        <th><a href="<?= $linkBuilder->getLinkForSorting('rating') ?>">Баллы</a></th>
       </tr>
-      <?php for($i = 0; $i < count($viewSettings['students']); $i++): ?>
+      <?php foreach($viewSettings['students'] as $student): ?>
         <tr>
-          <td><?= $viewSettings['students'][$i]->name ?></td>
-          <td><?= $viewSettings['students'][$i]->surname ?></td>
-          <td><?= $viewSettings['students'][$i]->sgroup ?></td>
-          <td><?= $viewSettings['students'][$i]->rating ?></td>
+          <td><?= htmlspecialchars($student->name) ?></td>
+          <td><?= htmlspecialchars($student->surname) ?></td>
+          <td><?= htmlspecialchars($student->sgroup) ?></td>
+          <td><?= htmlspecialchars($student->rating) ?></td>
         </tr>
-      <?php endfor; ?>
+      <?php endforeach; ?>
     </table>
   </div>
-  <?php if($viewSettings['totalPages'] > 1): ?>
+  <?php if($viewSettings['pager']->get_total_pages() > 1): ?>
   <nav id="table_nav">
     <ul class="pagination pagination-lg">
 
       <!-- Page nubmers start !-->
-      <?php for($i = 1; $i <= $viewSettings['totalPages']; $i++): ?>
+      <?php for($i = 1; $i <= $viewSettings['pager']->get_total_pages(); $i++): ?>
         <li "<?php if($i == $viewSettings['currentPage']): ?> class='active' <?php endif; ?>">
-          <a href="<?= $linkBuilder->get_link_for_page($i) ?>"><?= $i ?></a>
+          <a href="<?= $linkBuilder->getLinkForPage($i) ?>"><?= $i ?></a>
         </li>
       <?php endfor; ?>
       <!-- Page nubmers end !-->

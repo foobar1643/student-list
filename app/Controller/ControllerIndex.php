@@ -2,19 +2,23 @@
 
 namespace App\Controller;
 use \App\Model\Student;
-use \App\Database\StudentDataGateway;
-use \App\Config;
-use \App\Bootstrap as Bootstrap;
-use \App\Model\Helper\LinkHelper;
-use \App\Model\Helper\PaginationHelper;
+use \App\Helper\LinkHelper;
+use \App\Helper\PaginationHelper;
+use \App\Container;
 
 class ControllerIndex {
+
+    protected $container;
+
+    public function __construct(Container $c) {
+        $this->container = $c;
+    }
 
     public function run() {
         $viewSettings = array();
         $linkBuilder = new LinkHelper();
-        $config = new Config();
-        $dataGateway = new StudentDataGateway(Bootstrap::getPDO());
+        $config = $this->container->getConfig();
+        $dataGateway = $this->container->getDataGateway();
         $searchPattern = null;
         $viewSettings["currentPage"] = 1;
         $sortingPatterns = array("name", "surname", "sgroup", "rating");
@@ -32,29 +36,25 @@ class ControllerIndex {
                 $sortingType = $_GET['type'];
             }
             if(isset($_GET['search'])) {
-                $linkBuilder->is_searching = true;
-                $linkBuilder->search_pattern = $_GET['search'];
-                $searchPattern = $_GET['search'];
+                if(trim($_GET['search']) != "") {
+                    $linkBuilder->is_searching = true;
+                    $linkBuilder->search_pattern = $_GET['search'];
+                    $searchPattern = $_GET['search'];
+                } else {
+                    $viewSettings['error'] = true;
+                }
             }
         }
         $studentsCount = $dataGateway->get_total_students($searchPattern);
-        $pager = new PaginationHelper($studentsCount, $config->getKey('pagination', 'elemPerPage'), "index.php?page=");
-        $viewSettings["totalPages"] = $pager->get_total_pages();
-        if($viewSettings['currentPage'] > $viewSettings['totalPages']) $viewSettings['currentPage'] = 1;
+        $pager = new PaginationHelper($studentsCount, $config->getValue('pager', 'elemPerPage'), "index.php?page=");
+        $viewSettings["pager"] = $pager;
+        if($viewSettings['currentPage'] >  $pager->get_total_pages()) $viewSettings['currentPage'] = 1;
         $linkBuilder->sort_key = $currentPattern;
         $linkBuilder->sort_type = $sortingType;
-        $offset = $pager->get_offset_for_page($viewSettings["currentPage"]);
-        $viewSettings["nextPage"] = $pager->get_link_to_page($viewSettings["currentPage"] + 1); // get link to the next page
-        $viewSettings["previousPage"] = $pager->get_link_to_page($viewSettings["currentPage"] - 1); // get link to the previous page
-        $viewSettings["students"] = $dataGateway->select_students($offset, $currentPattern, $sortingType, $searchPattern);
+        $viewSettings["students"] = $dataGateway->select_students($pager->get_offset_for_page($viewSettings["currentPage"]), $currentPattern, $sortingType,
+            $searchPattern, $config->getValue('pager', 'elemPerPage'));
         $viewSettings["pageTitle"] = "Главная страница";
         $viewSettings["navTitle"] = "index";
-        for($i = 0; $i < count($viewSettings['students']); $i++) {
-            foreach(array_keys(get_object_vars($viewSettings["students"][$i])) as $key) {
-                $viewSettings["students"][$i]->$key = htmlspecialchars($viewSettings["students"][$i]->$key);
-            }
-        }
-        include_once("../templates/header.html");
-        include_once("../templates/index.html");
+        include("../templates/index.html");
     }
 }

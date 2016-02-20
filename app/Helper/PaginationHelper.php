@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Model\Helper;
-use \App\AppConfig;
+namespace App\Helper;
 
 class PaginationHelper {
 

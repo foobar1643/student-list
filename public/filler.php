@@ -1,14 +1,7 @@
 <?php
-require_once("../vendor/autoload.php");
+require("../app/init.php");
 
 use \App\Controller\ControllerFiller;
-use \App\ExceptionHandler;
 
-$app = new ControllerFiller();
-
-try {
-    $app->run();
-} catch(PDOException $e) {
-    $handler = new ExceptionHandler();
-    $handler->handleException($e);
-}
+$app = new ControllerFiller($container);
+runApp($app);

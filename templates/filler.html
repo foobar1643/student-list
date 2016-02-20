@@ -1,8 +1,9 @@
+<?php include_once("header.html") ?>
 <div id="form_content">
   <?php if($viewSettings['success']): ?>
     <div class="alert alert-success" role="alert">
       <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-      База данных пополнена на <?= $viewSettings['success'] ?> записей.
+      База данных пополнена на <?= htmlspecialchars($viewSettings['success']) ?> записей.
     </div>
   <?php endif; ?>
   <?php if($viewSettings['error']): ?>
