@@ -1,24 +1,30 @@
 <?php include_once("header.html") ?>
 <div id="content">
-    <?php if($viewSettings['error']): ?>
+    <?php if($error): ?>
       <div class="alert alert-danger" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Ошибка:</span>
           Вы не заполнили поле поиска.
       </div>
     <?php endif; ?>
+<?php if(!$linkBuilder->is_searching): ?>
   <form method="get">
-  <div class="row" id="search_box">
-    <div class="col-lg-4 col-lg-offset-4">
-      <div class="input-group">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Поиск</button>
-          </span>
-          <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы" required>
-      </div><!-- /input-group -->
-    </div><!-- /.col-lg-6 -->
-  </div>
-</form>
+      <div class="row" id="search_box">
+        <div class="col-lg-4 col-lg-offset-4">
+          <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Поиск</button>
+              </span>
+              <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы" required>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+      </div>
+  </form>
+<?php endif; ?>
+<?php if($linkBuilder->is_searching): ?>
+  <p class="search-info">Показаны результаты по запросу "<?= htmlspecialchars($linkBuilder->search_pattern) ?>"</p>
+  <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
+<?php endif; ?>
   <div class="panel panel-default">
     <!-- Default panel contents -->
     <div class="panel-heading">Список студентов</div>
@@ -29,7 +35,7 @@
         <th><a href="<?= $linkBuilder->getLinkForSorting('sgroup') ?>">Группа</a></th>
         <th><a href="<?= $linkBuilder->getLinkForSorting('rating') ?>">Баллы</a></th>
       </tr>
-      <?php foreach($viewSettings['students'] as $student): ?>
+      <?php foreach($students as $student): ?>
         <tr>
           <td><?= htmlspecialchars($student->name) ?></td>
           <td><?= htmlspecialchars($student->surname) ?></td>
@@ -39,14 +45,16 @@
       <?php endforeach; ?>
     </table>
   </div>
-  <?php if($viewSettings['pager']->get_total_pages() > 1): ?>
+  <?php if($pager->getPages() > 1): ?>
   <nav id="table_nav">
     <ul class="pagination pagination-lg">
 
       <!-- Page nubmers start !-->
-      <?php for($i = 1; $i <= $viewSettings['pager']->get_total_pages(); $i++): ?>
-        <li "<?php if($i == $viewSettings['currentPage']): ?> class='active' <?php endif; ?>">
-          <a href="<?= $linkBuilder->getLinkForPage($i) ?>"><?= $i ?></a>
+      <?php for($i = 1; $i <= $pager->getPages(); $i++): ?>
+        <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
+          <a href="<?= $linkBuilder->getLinkForPage($i) ?>">
+              <?= $i ?>
+          </a>
         </li>
       <?php endfor; ?>
       <!-- Page nubmers end !-->

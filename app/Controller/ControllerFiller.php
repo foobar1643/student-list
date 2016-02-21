@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 use \App\Model\Student;
-use \App\Exception\ExceptionHandler;
 use \App\Exception\FileOperationException;
 use \App\Container;
 
@@ -15,6 +14,11 @@ class ControllerFiller {
     }
 
     public function run() {
+        $config = $this->container->getConfig();
+        if($config->getValue("app", "enableFiller") == false) {
+            header("Location: index.php");
+            die();
+        }
         if($_POST) {
             $count = isset($_POST['count_field']) ? strval($_POST['count_field']) : '';
             if($count < 100 && $count > 0) {
@@ -25,22 +29,22 @@ class ControllerFiller {
                     $student = new Student();
                     $student->name = $data["names"][mt_rand(0, count($data["names"])-1)];
                     $student->surname = $data["surnames"][mt_rand(0, count($data["surnames"])-1)];
-                    $student->gender = "male"; // Sexism?
+                    $student->gender = Student::GENDER_MALE; // Sexism?
                     for($x = 0; $x < mt_rand(3, 4); $x++) $student->sgroup .= $letters[mt_rand(0, count($letters)-1)];
                     for($x = 0; $x < mt_rand(3, 15); $x++) $student->email .= $letters[mt_rand(0, count($letters)-1)];
                     $student->email .= "@gmail.com";
                     $student->byear = "19" . mt_rand(0,9) . mt_rand(0,9);
-                    $student->status = "resident";
+                    $student->status = Student::STATUS_RESIDENT;
                     $student->rating = mt_rand(1,150);
                     $dataGateway->add_student($student);
                 }
-                $viewSettings['success'] = $_POST['count_field'];
+                $success = $_POST['count_field'];
             } else {
-                $viewSettings['error'] = true;
+                $error = true;
             }
         }
-        $viewSettings['pageTitle'] = "Заполнитель базы данных";
-        $viewSettings['navTitle'] = "filler";
+        $pageTitle = "Заполнитель базы данных";
+        $navTitle = "filler";
         include("../templates/filler.html");
     }
 

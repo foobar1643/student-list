@@ -5,8 +5,14 @@ body { padding: 50px; }
 #search_box { margin-bottom: 10px; }
 #form_content h3 { margin-top: 0px; }
 #form_content .alert { text-align: left; }
+#text-all { float: right; }
+
+.search-info {
+    display: inline;
+    font-weight: bold;
+}
 
 #form_content .form-group {
-  margin: 0 auto;
-  float: none;
+    margin: 0 auto;
+    float: none;
 }

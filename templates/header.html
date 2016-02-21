@@ -8,7 +8,7 @@
     <link href="media/css/style.css" rel="stylesheet">
     <script src="media/js/jquery.min.js"></script>
     <script src="media/bootstrap/js/bootstrap.min.js"></script>
-    <title><?= $viewSettings['pageTitle'] ?></title>
+    <title><?= $pageTitle ?></title>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -24,9 +24,15 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li "<?php if($viewSettings['navTitle'] == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
-            <li "<?php if($viewSettings['navTitle'] == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
-            <li "<?php if($viewSettings['navTitle'] == 'filler'): ?>" class="active" "<?php endif; ?>"><a href="filler.php">Заполнитель</a></li>
+            <li "<?php if($navTitle == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
+            <?php if($_COOKIE['auth']): ?>
+                <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Редактировать</a></li>
+            <?php else: ?>
+                <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
+            <?php endif; ?>
+            <?php if($this->container->getConfig()->getValue("app", "enableFiller") == true): ?>
+                <li "<?php if($navTitle == 'filler'): ?>" class="active" "<?php endif; ?>"><a href="filler.php">Заполнитель</a></li>
+            <?php endif; ?>
             <li><a href="logout.php">Выход</a></li>
             <!-- <li><a href="filler.php">Заполнитель</a></li> !-->
           </ul>

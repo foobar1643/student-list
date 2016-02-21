@@ -4,35 +4,29 @@ namespace App\Helper;
 
 class LinkHelper {
 
-    public $is_paging;
-    public $page_number;
-    public $is_searching;
-    public $search_pattern;
-    public $is_sorting;
-    public $sort_key;
-    public $sort_type;
+    public $pageNumber;
+    public $searchPattern;
+    public $sortKey;
+    public $sortType;
 
     public function getLinkForSorting($key) {
-        $sortType = $this->sort_type;
+        $sortType = $this->sortType;
         $data = array("sort" => $key);
         if($sortType == "desc") $sortType = "asc";
         else $sortType = "desc";
         $data["type"] = $sortType;
-        if($this->is_paging) {
-            $data["page"] = $this->page_number;
-        }
+        if(isset($this->pageNumber)) $data["page"] = $this->pageNumber;
+        if(isset($this->searchPattern)) $data["search"] = $this->searchPattern;
         return "?" . http_build_query($data);
     }
 
     public function getLinkForPage($page) {
         $data = array("page" => $page);
-        if($this->is_sorting) {
-            $data["sort"] = $this->sort_key;
-            $data["type"] = $this->sort_type;
+        if(isset($this->sortKey) && isset($this->sortType)) {
+            $data["sort"] = $this->sortKey;
+            $data["type"] = $this->sortType;
         }
-        if($this->is_searching) {
-            $data["search"] = $this->search_pattern;
-        }
+        if(isset($this->searchPattern)) $data["search"] = $this->searchPattern;
         return "?" . http_build_query($data);
     }
 }

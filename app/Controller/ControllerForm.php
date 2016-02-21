@@ -16,21 +16,21 @@ class ControllerForm {
 
     public function run() {
         $viewSettings = array();
+        $pageTitle  = "Добавить запись";
         $dataGateway = $this->container->getDataGateway();
-        $formValidator = new FormHelper();
+        $formHelper = new FormHelper();
         $tokenHelper = new TokenHelper();
         if($_POST) {
             if(!$tokenHelper->checkCsrfToken($_POST['csrf_field'], $_COOKIE['token'])) { //!isset($_POST['csrf_field']) && !isset($_COOKIE['token']) && $_POST['csrf_field'] != $_COOKIE['token']
-                $viewSettings['error'] = true;
+                $error = true;
             } else {
                 $student = new Student();
-                $fields = $formValidator->getAllowedFields();
-                foreach($fields as $key) {
+                foreach($formHelper->getAllowedFields() as $key) {
                     $student->$key = isset($_POST[$key . '_field']) ? strval($_POST[$key . '_field']) : '';
                 }
-                $errors = $formValidator->validateStudent($student);
+                $errors = $formHelper->validateStudent($student);
                 if(!isset($_COOKIE['auth']) && $dataGateway->checkEmail($student->email) != 0) {
-                    $errors['email_exists'] = true;
+                    $errors['email_exists'] = "Такой e-mail уже занят другим пользователем.";
                 }
                 if(!$errors) { // If there is no errors in form
                     if(isset($_COOKIE['auth'])) { // if user has an auth cookie
@@ -40,7 +40,7 @@ class ControllerForm {
                             header("Location: form.php?notify=success");
                             die();
                         } else {
-                            $viewSettings['error'] = true;
+                            $error = true;
                         }
                     } else { // if user doesn't have an auth cookie
                         $student->token = $tokenHelper->generateToken(); // generate a new token for user
@@ -50,19 +50,19 @@ class ControllerForm {
                         die();
                     }
                 } else { // If there is errors in form
-                    $viewSettings['error'] = $errors;
-                    $viewSettings['student'] = $student;
+                    $error = $errors;
                 }
             }
         }
-        if(isset($_GET['notify']) && !isset($viewSettings['error'])) {
-            $viewSettings['success'] = true;
+        if(isset($_GET['notify']) && !isset($error)) {
+            $success = true;
         }
-        if(isset($_COOKIE['auth']) && !isset($viewSettings['error'])) {
+        if(isset($_COOKIE['auth']) && !isset($error)) {
             $auth = $dataGateway->selectToken($_COOKIE['auth']);
             if(isset($auth->id)) {
                 $currentStudent = $dataGateway->fetch_student($auth->id);
-                $viewSettings['student'] = $currentStudent;
+                $student = $currentStudent;
+                $pageTitle  = "Редактировать запись";
             }
         }
         $userToken = $_COOKIE['token'];
@@ -70,9 +70,8 @@ class ControllerForm {
             $userToken = $tokenHelper->generateToken();
         }
         $tokenHelper->setCsrfToken($userToken);
-        $viewSettings["csrf_token"]  = $userToken;
-        $viewSettings["pageTitle"]  = "Добавить запись";
-        $viewSettings["navTitle"]  = "form";
+        $csrfToken = $userToken;
+        $navTitle = "form";
         include("../templates/form.html");
     }
 }

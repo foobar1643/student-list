@@ -1,12 +1,12 @@
 <?php include_once("header.html") ?>
 <div id="form_content">
-  <?php if($viewSettings['success']): ?>
+  <?php if($success): ?>
     <div class="alert alert-success" role="alert">
       <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-      База данных пополнена на <?= htmlspecialchars($viewSettings['success']) ?> записей.
+      База данных пополнена на <?= htmlspecialchars($success) ?> записей.
     </div>
   <?php endif; ?>
-  <?php if($viewSettings['error']): ?>
+  <?php if($error): ?>
     <div class="alert alert-danger" role="alert">
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
       <span class="sr-only">Ошибка:</span>

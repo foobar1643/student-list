@@ -4,40 +4,38 @@ namespace App\Helper;
 
 class PaginationHelper {
 
-  private $records;
-  private $records_per_page;
-  private $total_pages;
-  private $page_link;
+    private $records;
+    private $recordsPerPage;
+    private $totalPages;
 
-  public function __construct($total_records, $records_per_page, $page_link) {
-    $this->records = $total_records;
-    $this->records_per_page = $records_per_page;
-    $this->page_link = $page_link;
-  }
-
-  public function count_total_pages() {
-    $page = $this->records;
-    $this->total_pages = null;
-    while(0 < $page) {
-      $page = $page - $this->records_per_page;
-      $this->total_pages++;
+    public function __construct($totalRecords, $recordsPerPage) {
+        $this->records = $totalRecords;
+        $this->recordsPerPage = $recordsPerPage;
+        $this->totalPages = $this->countPages();
     }
-  }
 
-  public function get_total_pages() {
-    $this->count_total_pages();
-    return $this->total_pages;
-  }
+    public function getPages() {
+        return $this->totalPages;
+    }
 
-  public function get_offset_for_page($page) {
-    for($i = 1; $i < $page; $i++) $offset = $offset + $this->records_per_page;
-    return $offset;
-  }
+    public function getOffset($page) {
+        $offset = null;
+        for($i = 1; $i < $page; $i++) $offset += $this->recordsPerPage;
+        return $offset;
+    }
 
-  public function get_link_to_page($page) {
-    $this->count_total_pages();
-    if($page <= 1) $page = 1;
-    if($page >= $this->total_pages) $page = $this->total_pages;
-    return $page_link . $page;
-  }
+    public function checkPage($page) {
+        if($page > $this->totalPages) return 1;
+        else return $page;
+    }
+
+    private function countPages() {
+        $pages = null;
+        $page = $this->records;
+        while(0 < $page) {
+            $page -= $this->recordsPerPage;
+            $pages++;
+        }
+        return $pages;
+    }
 }

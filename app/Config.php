@@ -6,6 +6,8 @@ use \App\Exception\ConfigValueException;
 class Config {
 
     /* App config variables */
+    protected $app_enableFiller;
+
     protected $db_type;
     protected $db_host;
     protected $db_port;
@@ -17,6 +19,8 @@ class Config {
 
     public function __construct() {
         // Default settings
+        $this->app_enableFiller = false;
+
         $this->db_type = "pgsql";
         $this->db_host = "127.0.0.1";
         $this->db_port = "5412";

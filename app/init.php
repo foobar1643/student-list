@@ -4,8 +4,6 @@ require("../vendor/autoload.php");
 use \App\Container;
 use \App\Config;
 use \App\Exception\ExceptionHandler;
-use \App\Exception\FileOperationException;
-use \App\Excetion\ConfigValueException;
 use \App\Exception\FatalException;
 
 $c = new Config();
