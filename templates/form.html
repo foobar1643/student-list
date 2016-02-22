@@ -14,7 +14,7 @@
   <?php if($success): ?>
     <div class="alert alert-success" role="alert">
       <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-      Форма заполнена успешно.
+        Форма успешно заполнена.
     </div>
   <?php endif; ?>
   <h3>
@@ -32,16 +32,20 @@
       <div class="form-group col-md-3 <?php if($error['name']): ?> has-error <?php endif; ?>">
         <label for="name_field">Имя</label>
         <input type="text" class="form-control" name="name_field" id="name_field" placeholder="Имя"
-            value="<?php if($student->name): print($student->name); endif; ?>"
-            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z]{1,15}$" title="Имя должно быть не длиннее 15 символов." required>
+            value="<?php if($student->name): ?><?= htmlspecialchars($student->name); ?><?php endif; ?>"
+            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z\s]{1,15}$"
+            title="Имя должно быть не длиннее 15 символов, в имени разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
+            required>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-md-3 <?php if($error['surname']): ?> has-error <?php endif; ?>">
         <label for="surname_field">Фамилия</label>
         <input type="text" class="form-control" name="surname_field" id="surname_field" placeholder="Фамилия"
-            value="<?php if($student->surname): print($student->surname); endif; ?>"
-            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z]{1,15}$" title="Фамилия должна быть не длиннее 20 символов." required>
+            value="<?php if($student->surname): ?><?= htmlspecialchars($student->surname); ?><?php endif; ?>"
+            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z\s]{1,20}$"
+            title="Фамилия должна быть не длиннее 20 символов, в фамилии разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
+            required>
       </div>
     </div>
     <div class="row">
@@ -57,22 +61,25 @@
       <div class="form-group col-md-3 <?php if($error['group']): ?> has-error <?php endif; ?>">
         <label for="group_field">Группа</label>
         <input type="text" class="form-control" name="sgroup_field" id="group_field" placeholder="Группа"
-            value="<?php if($student->sgroup): print($student->sgroup); endif; ?>"
-            pattern="^[-А-ЯЁа-яёa-zA-Z0-9]{2,5}$" title="Имя группы должно быть не короче 2 и не длиннее 5 символов." required>
+            value="<?php if($student->sgroup): ?><?= htmlspecialchars($student->sgroup); ?><?php endif; ?>"
+            pattern="^[-А-ЯЁа-яёa-zA-Z0-9]{2,5}$"
+            title="Имя группы должно быть не короче двух и не длиннее пяти символов, в имени группы разрешается использовать символы латиницы, кириллицы, цифры и дефисы."
+            required>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-md-3 <?php if($error['email']): ?> has-error <?php endif; ?>">
         <label for="email_field">Адрес email</label>
         <input type="email" class="form-control" name="email_field" id="email_field" placeholder="Email"
-          value="<?php if($student->email): print($student->email); endif; ?>" title="E-mail должен быть в формате name@site.com." required>
+          value="<?php if($student->email): ?><?= htmlspecialchars($student->email); ?><?php endif; ?>"
+          title="E-mail должен быть указан в формате name@site.com." required>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-md-3 <?php if($error['byear']): ?> has-error <?php endif; ?>">
         <label for="byear_field">Год рождения</label>
         <input type="number" class="form-control" name="byear_field" id="byear_field" placeholder="Год рождения"
-            value="<?php if($student->byear): print($student->byear); endif; ?>"
+            value="<?php if($student->byear): ?><?= htmlspecialchars($student->byear); ?><?php endif; ?>"
             min="1900" max="2000" title="Год рождения должен быть не меньше 1900 и не больше 2000." required>
       </div>
     </div>
@@ -89,8 +96,8 @@
       <div class="form-group col-md-3 <?php if($error['rating']): ?> has-error <?php endif; ?>">
         <label for="rating_field">Балы ЕГЭ</label>
           <input type="number" name="rating_field" class="form-control" id="rating_field" placeholder="ЕГЭ"
-            value="<?php if(isset($student->rating)): print($student->rating); endif;  ?>"
-            min="0" max="150" title="Баллы должны быть больше 0 и не больше чем 150." required>
+            value="<?php if(isset($student->rating)): ?><?= htmlspecialchars($student->rating); ?><?php endif; ?>"
+            min="0" max="<?= $formHelper::MAX_RATING ?>" title="Баллы должны быть больше 0 и не больше чем <?= $formHelper::MAX_RATING ?>." required>
       </div>
     </div>
     <button type="submit" class="btn btn-default">Подтвердить</button>

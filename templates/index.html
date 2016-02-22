@@ -7,7 +7,7 @@
           Вы не заполнили поле поиска.
       </div>
     <?php endif; ?>
-<?php if(!$linkBuilder->is_searching): ?>
+<?php if(!isset($linkBuilder->searchPattern)): ?>
   <form method="get">
       <div class="row" id="search_box">
         <div class="col-lg-4 col-lg-offset-4">
@@ -21,8 +21,8 @@
       </div>
   </form>
 <?php endif; ?>
-<?php if($linkBuilder->is_searching): ?>
-  <p class="search-info">Показаны результаты по запросу "<?= htmlspecialchars($linkBuilder->search_pattern) ?>"</p>
+<?php if(isset($linkBuilder->searchPattern)): ?>
+  <p class="search-info">Показаны результаты по запросу "<?= htmlspecialchars($linkBuilder->searchPattern) ?>"</p>
   <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
 <?php endif; ?>
   <div class="panel panel-default">

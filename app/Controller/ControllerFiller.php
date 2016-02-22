@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use \App\Model\Student;
+use \App\Helper\FormHelper;
 use \App\Exception\FileOperationException;
 use \App\Container;
 
@@ -35,7 +36,7 @@ class ControllerFiller {
                     $student->email .= "@gmail.com";
                     $student->byear = "19" . mt_rand(0,9) . mt_rand(0,9);
                     $student->status = Student::STATUS_RESIDENT;
-                    $student->rating = mt_rand(1,150);
+                    $student->rating = mt_rand(0,FormHelper::MAX_RATING);
                     $dataGateway->add_student($student);
                 }
                 $success = $_POST['count_field'];

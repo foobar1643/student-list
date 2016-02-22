@@ -7,7 +7,7 @@ use \App\Exception\ExceptionHandler;
 use \App\Exception\FatalException;
 
 $c = new Config();
-$c->loadFromFile();
+$c->loadFromFile("../config.ini");
 $container = new Container($c);
 
 function runApp($app) {

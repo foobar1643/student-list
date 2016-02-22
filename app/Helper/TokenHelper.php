@@ -8,7 +8,9 @@ class TokenHelper {
         $source = str_split('abcdefghijklmnopqrstuvwxyz'
           .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
           .'0123456789');
-        for($i = 0; $i < 40; $i++) $result .= $source[rand(0, count($source)-1)];
+        for($i = 0; $i < 40; $i++) {
+            $result .= $source[rand(0, count($source)-1)];
+        }
         return $result;
     }
 
@@ -17,7 +19,9 @@ class TokenHelper {
     }
 
     public function checkCsrfToken($formData, $cookieData) {
-        if(isset($formData) && isset($cookieData) && $formData == $cookieData) return true;
+        if(isset($formData) && isset($cookieData) && $formData == $cookieData) {
+            return true;
+        }
         return false;
     }
 }

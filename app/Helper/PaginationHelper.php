@@ -20,13 +20,17 @@ class PaginationHelper {
 
     public function getOffset($page) {
         $offset = null;
-        for($i = 1; $i < $page; $i++) $offset += $this->recordsPerPage;
+        for($i = 1; $i < $page; $i++) {
+            $offset += $this->recordsPerPage;
+        }
         return $offset;
     }
 
     public function checkPage($page) {
-        if($page > $this->totalPages) return 1;
-        else return $page;
+        if($page > $this->totalPages) {
+            return 1;
+        }
+        return $page;
     }
 
     private function countPages() {

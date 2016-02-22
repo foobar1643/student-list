@@ -5,44 +5,30 @@ use \App\Exception\ConfigValueException;
 
 class Config {
 
-    /* App config variables */
-    protected $app_enableFiller;
+    /* Default settings */
+    protected $appEnableFiller = false;
 
-    protected $db_type;
-    protected $db_host;
-    protected $db_port;
-    protected $db_username;
-    protected $db_password;
-    protected $db_name;
+    protected $dbType = "pgsql";
+    protected $dbHost = "127.0.0.1";
+    protected $dbPort = "5412";
+    protected $dbUsername = "root";
+    protected $dbPassword = "qwerty";
+    protected $dbName = "students";
 
-    protected $pager_elemPerPage;
+    protected $pagerElemPerPage = 15;
 
-    public function __construct() {
-        // Default settings
-        $this->app_enableFiller = false;
-
-        $this->db_type = "pgsql";
-        $this->db_host = "127.0.0.1";
-        $this->db_port = "5412";
-        $this->db_username = "root";
-        $this->db_password = "qwerty";
-        $this->db_name = "students";
-
-        $this->pager_elemPerPage = 15;
-    }
-
-    public function loadFromFile() {
-        $ini = parse_ini_file("../config.ini", true);
+    public function loadFromFile($file) {
+        $ini = parse_ini_file($file, true);
         foreach($ini as $section => $container) {
             foreach($container as $name => $value) {
-                $this->{$section."_".$name} = $value;
+                $this->{$section . ucfirst($name)} = $value;
             }
         }
     }
 
     public function getValue($section, $key) {
-        if(isset($this->{$section."_".$key})) {
-            return $this->{$section."_".$key};
+        if(isset($this->{$section . ucfirst($key)})) {
+            return $this->{$section . ucfirst($key)};
         } else {
             throw new ConfigValueException("No such value in the config (Section: $section; Key: $key).");
         }
