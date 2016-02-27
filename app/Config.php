@@ -16,7 +16,7 @@ class Config {
     protected $dbName = "students";
 
     protected $pagerElemPerPage = 15;
-
+    
     public function loadFromFile($file) {
         $ini = parse_ini_file($file, true);
         foreach($ini as $section => $container) {

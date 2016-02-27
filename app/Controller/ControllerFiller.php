@@ -1,21 +1,22 @@
 <?php
 
 namespace App\Controller;
+
+use Pimple\Container;
 use \App\Model\Student;
 use \App\Helper\FormHelper;
 use \App\Exception\FileOperationException;
-use \App\Container;
 
 class ControllerFiller {
 
-    protected $container;
+    private $container;
 
     public function __construct(Container $c) {
         $this->container = $c;
     }
 
     public function run() {
-        $config = $this->container->getConfig();
+        $config = $this->container["config"];
         if($config->getValue("app", "enableFiller") == false) {
             header("Location: index.php");
             die();
@@ -25,7 +26,7 @@ class ControllerFiller {
             if($count < 100 && $count > 0) {
                 $data = $this->readNames();
                 $letters = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-                $dataGateway = $this->container->getDataGateway();
+                $dataGateway = $this->container["dataGateway"];
                 for($i = 0; $i < $count; $i++) {
                     $student = new Student();
                     $student->name = $data["names"][mt_rand(0, count($data["names"])-1)];

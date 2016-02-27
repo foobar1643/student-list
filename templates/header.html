@@ -30,7 +30,7 @@
             <?php else: ?>
                 <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
             <?php endif; ?>
-            <?php if($this->container->getConfig()->getValue("app", "enableFiller") == true): ?>
+            <?php if($this->container["config"]->getValue("app", "enableFiller") == true): ?>
                 <li "<?php if($navTitle == 'filler'): ?>" class="active" "<?php endif; ?>"><a href="filler.php">Заполнитель</a></li>
             <?php endif; ?>
             <li><a href="logout.php">Выход</a></li>

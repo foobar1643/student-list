@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Controller;
+
+use Pimple\Container;
 use \App\Model\Student;
 use \App\Helper\LinkHelper;
 use \App\Helper\PaginationHelper;
-use \App\Container;
 
 class ControllerIndex {
 
-    protected $container;
+    private $container;
 
     public function __construct(Container $c) {
         $this->container = $c;
@@ -16,8 +17,8 @@ class ControllerIndex {
 
     public function run() {
         $linkBuilder = new LinkHelper();
-        $config = $this->container->getConfig();
-        $dataGateway = $this->container->getDataGateway();
+        $config = $this->container["config"];
+        $dataGateway = $this->container["dataGateway"];
         $searchPattern = null;
         $currentPage = 1;
         $sortingPatterns = array("name", "surname", "sgroup", "rating");

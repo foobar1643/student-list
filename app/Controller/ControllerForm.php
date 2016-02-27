@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Controller;
+
+use Pimple\Container;
 use \App\Model\Student;
 use \App\Helper\TokenHelper;
 use \App\Helper\FormHelper;
-use \App\Container;
 
 class ControllerForm {
 
-    protected $container;
+    private $container;
 
     public function __construct(Container $c) {
         $this->container = $c;
@@ -17,7 +18,7 @@ class ControllerForm {
     public function run() {
         $viewSettings = array();
         $pageTitle  = "Добавить запись";
-        $dataGateway = $this->container->getDataGateway();
+        $dataGateway = $this->container["dataGateway"];
         $formHelper = new FormHelper();
         $tokenHelper = new TokenHelper();
         if($_POST) {
