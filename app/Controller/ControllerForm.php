@@ -29,9 +29,12 @@ class ControllerForm {
                 foreach($formHelper->getAllowedFields() as $key) {
                     $student->$key = isset($_POST[$key . '_field']) ? strval($_POST[$key . '_field']) : '';
                 }
+                if(!isset($_COOKIE['auth'])) {
+                    $student->id = 0;
+                }
                 $errors = $formHelper->validateStudent($student);
-                if(!isset($_COOKIE['auth']) && $dataGateway->checkEmail($student->email) != 0) {
-                    $errors['email_exists'] = "Такой e-mail уже занят другим пользователем.";
+                if($dataGateway->checkEmail($student->email, $student->id) != 0) {
+                    $errors['email'] = "Такой e-mail уже занят другим пользователем.";
                 }
                 if(!$errors) { // If there is no errors in form
                     if(isset($_COOKIE['auth'])) { // if user has an auth cookie

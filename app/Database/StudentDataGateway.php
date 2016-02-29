@@ -73,9 +73,10 @@ class StudentDataGateway {
         return $student;
     }
 
-    public function checkEmail($email) {
-        $query = $this->db_pdo->prepare("SELECT COUNT(*) FROM students WHERE email = :email_bind");
+    public function checkEmail($email, $id) {
+        $query = $this->db_pdo->prepare("SELECT COUNT(*) FROM students WHERE email = :email_bind AND NOT EXISTS (SELECT * FROM students WHERE id = :id_bind AND email = :email_bind)");
         $query->bindValue(":email_bind", $email, \PDO::PARAM_STR);
+        $query->bindValue(":id_bind", $id, \PDO::PARAM_INT);
         $query->execute();
         $result = $query->fetchColumn();
         return $result;
