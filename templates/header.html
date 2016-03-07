@@ -1,41 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="media/css/style.css" rel="stylesheet">
-    <script src="media/js/jquery.min.js"></script>
-    <script src="media/bootstrap/js/bootstrap.min.js"></script>
-    <title><?= $pageTitle ?></title>
-  </head>
-  <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.php">Список студентов</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li "<?php if($navTitle == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
-            <?php if($_COOKIE['auth']): ?>
-                <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Редактировать</a></li>
-            <?php else: ?>
-                <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
-            <?php endif; ?>
-            <?php if($this->container["config"]->getValue("app", "enableFiller") == true): ?>
-                <li "<?php if($navTitle == 'filler'): ?>" class="active" "<?php endif; ?>"><a href="filler.php">Заполнитель</a></li>
-            <?php endif; ?>
-            <li><a href="logout.php">Выход</a></li>
-            <!-- <li><a href="filler.php">Заполнитель</a></li> !-->
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="media/css/style.css" rel="stylesheet">
+        <script src="media/js/jquery.min.js"></script>
+        <script src="media/bootstrap/js/bootstrap.min.js"></script>
+        <title><?= $pageTitle ?></title>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.php">Список студентов</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li "<?php if($navTitle == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
+                        <?php if($_COOKIE['auth']): ?>
+                            <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Редактировать</a></li>
+                        <?php else: ?>
+                            <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
+                        <?php endif; ?>
+                        <li><a href="logout.php">Выход</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+    </body>

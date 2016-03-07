@@ -4,7 +4,7 @@ require("../vendor/autoload.php");
 use Pimple\Container;
 use \App\Config;
 use \App\Database\StudentDataGateway;
-use \App\Exception\ExceptionHandler;
+use \App\ExceptionHandler;
 use \App\Exception\FatalException;
 
 $container = new Container();
@@ -15,9 +15,11 @@ $container["config"] = function($c) {
 };
 
 $container["pdo"] = function($c) {
-    $pdo = new \PDO($c["config"]->getValue('db', 'type') . ":dbname=".
-        $c["config"]->getValue('db', 'name') . ";host=".
+    $dsn = sprintf("pgsql:host=%s;port=%s;dbname=%s",
         $c["config"]->getValue('db', 'host'),
+        $c["config"]->getValue('db', 'port'),
+        $c["config"]->getValue('db', 'name'));
+    $pdo = new \PDO($dsn,
         $c["config"]->getValue('db', 'username'),
         $c["config"]->getValue('db', 'password'));
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

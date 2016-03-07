@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Pimple\Container;
 use \App\Model\Student;
-use \App\Helper\LinkHelper;
+use \App\Helper\TableLinkHelper;
 use \App\Helper\PaginationHelper;
 
 class ControllerIndex {
@@ -16,7 +16,10 @@ class ControllerIndex {
     }
 
     public function run() {
-        $linkBuilder = new LinkHelper();
+        $pageTitle = "Главная страница";
+        $navTitle = "index";
+        $error = false;
+        $linkBuilder = new TableLinkHelper();
         $config = $this->container["config"];
         $dataGateway = $this->container["dataGateway"];
         $searchPattern = null;
@@ -24,33 +27,30 @@ class ControllerIndex {
         $sortingPatterns = array("name", "surname", "sgroup", "rating");
         $sortingType = "desc";
         $currentPattern = $sortingPatterns[3];
-        if($_GET) {
-            if(isset($_GET['page'])) {
-                $currentPage = $_GET['page'];
-                $linkBuilder->pageNumber = $_GET['page'];
-            }
-            if(isset($_GET['sort']) && isset($_GET['type']) && in_array($_GET['sort'], $sortingPatterns)) {
-                $currentPattern = $_GET['sort'];
-                $sortingType = $_GET['type'];
-            }
-            if(isset($_GET['search'])) {
-                if(trim($_GET['search']) != "") {
-                    $linkBuilder->searchPattern = $_GET['search'];
-                    $searchPattern = $_GET['search'];
-                } else {
-                    $error = true;
-                }
+        if(isset($_GET['page'])) {
+            $currentPage = intval($_GET['page']);
+            $linkBuilder->pageNumber = intval($_GET['page']);
+        }
+        if(isset($_GET['sort']) && isset($_GET['type']) && in_array($_GET['sort'], $sortingPatterns)) {
+            $currentPattern = $_GET['sort'];
+            $sortingType = $_GET['type'];
+        }
+        if(isset($_GET['search'])) {
+            $searchQuery = trim($_GET['search']);
+            if($searchQuery != "") {
+                $linkBuilder->searchPattern = $searchQuery;
+                $searchPattern = $searchQuery;
+            } else {
+                $error = true;
             }
         }
-        $studentsCount = $dataGateway->get_total_students($searchPattern);
+        $studentsCount = $dataGateway->getTotalStudents($searchPattern);
         $pager = new PaginationHelper($studentsCount, $config->getValue('pager', 'elemPerPage'));
         $currentPage = $pager->checkPage($currentPage);
         $linkBuilder->sortKey = $currentPattern;
         $linkBuilder->sortType = $sortingType;
-        $students = $dataGateway->select_students($pager->getOffset($currentPage), $currentPattern, $sortingType,
+        $students = $dataGateway->selectStudents($pager->getOffset($currentPage), $currentPattern, $sortingType,
             $searchPattern, $config->getValue('pager', 'elemPerPage'));
-        $pageTitle = "Главная страница";
-        $navTitle = "index";
         include("../templates/index.html");
     }
 }

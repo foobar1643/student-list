@@ -2,8 +2,12 @@
 
 namespace App\Model;
 
-
 class Student {
+
+    const GENDER_MALE = "male";
+    const GENDER_FEMALE = "female";
+    const STATUS_RESIDENT = "resident";
+    const STATUS_NONRESIDENT = "nonresident";
 
     public $id;
     public $name;
@@ -15,10 +19,4 @@ class Student {
     public $status;
     public $rating;
     public $token;
-
-    const GENDER_MALE = "male";
-    const GENDER_FEMALE = "female";
-
-    const STATUS_RESIDENT = "resident";
-    const STATUS_NONRESIDENT = "nonresident";
 }

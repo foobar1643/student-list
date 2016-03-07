@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-class LinkHelper {
+class TableLinkHelper {
 
     public $pageNumber;
     public $searchPattern;

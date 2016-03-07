@@ -1,67 +1,109 @@
-<?php include_once("header.html") ?>
+<?php include("header.html") ?>
 <div id="content">
     <?php if($error): ?>
-      <div class="alert alert-danger" role="alert">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Ошибка:</span>
-          Вы не заполнили поле поиска.
-      </div>
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Ошибка:</span>
+            Вы не заполнили поле поиска.
+        </div>
     <?php endif; ?>
-<?php if(!isset($linkBuilder->searchPattern)): ?>
-  <form method="get">
-      <div class="row" id="search_box">
-        <div class="col-lg-4 col-lg-offset-4">
-          <div class="input-group">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Поиск</button>
-              </span>
-              <input type="text" name="search" class="form-control" placeholder="Введите часть имени, фамилии или группы" required>
-          </div><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
-      </div>
-  </form>
-<?php endif; ?>
-<?php if(isset($linkBuilder->searchPattern)): ?>
-  <p class="search-info">Показаны результаты по запросу "<?= htmlspecialchars($linkBuilder->searchPattern) ?>"</p>
-  <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
-<?php endif; ?>
-  <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Список студентов</div>
-    <table class="table">
-      <tr>
-        <th><a href="<?= $linkBuilder->getLinkForSorting('name') ?>">Имя</a></th>
-        <th><a href="<?= $linkBuilder->getLinkForSorting('surname') ?>">Фамилия</a></th>
-        <th><a href="<?= $linkBuilder->getLinkForSorting('sgroup') ?>">Группа</a></th>
-        <th><a href="<?= $linkBuilder->getLinkForSorting('rating') ?>">Баллы</a></th>
-      </tr>
-      <?php foreach($students as $student): ?>
-        <tr>
-          <td><?= htmlspecialchars($student->name) ?></td>
-          <td><?= htmlspecialchars($student->surname) ?></td>
-          <td><?= htmlspecialchars($student->sgroup) ?></td>
-          <td><?= htmlspecialchars($student->rating) ?></td>
-        </tr>
-      <?php endforeach; ?>
-    </table>
-  </div>
-  <?php if($pager->getPages() > 1): ?>
-  <nav id="table_nav">
-    <ul class="pagination pagination-lg">
 
-      <!-- Page nubmers start !-->
-      <?php for($i = 1; $i <= $pager->getPages(); $i++): ?>
-        <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
-          <a href="<?= $linkBuilder->getLinkForPage($i) ?>">
-              <?= $i ?>
-          </a>
-        </li>
-      <?php endfor; ?>
-      <!-- Page nubmers end !-->
+    <?php if($students || isset($linkBuilder->searchPattern)): ?>
+        <form method="get">
+            <div class="row" id="search_box">
+                <div class="col-lg-4 col-lg-offset-4">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Поиск</button>
+                        </span>
+                        <input type="text" name="search" class="form-control"
+                        placeholder="Введите запрос для поиска"
+                        value="<?= htmlspecialchars($linkBuilder->searchPattern) ?>" required>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </div>
+        </form>
+    <?php endif; ?>
 
-    </ul>
-  </nav>
-  <?php endif; ?>
+    <?php if($students): ?>
+        <?php if($linkBuilder->searchPattern != null): ?>
+            <p class="search-info">Показаны результаты по запросу &laquo<?= htmlspecialchars($linkBuilder->searchPattern) ?>&raquo</p>
+            <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
+        <?php endif; ?>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Список студентов</div>
+            <table class="table">
+                <tr>
+                    <th>
+                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('name')) ?>">Имя</a>
+                        <?php if($linkBuilder->sortKey == 'name' && $linkBuilder->sortType == 'asc'): ?>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <?php elseif($linkBuilder->sortKey == 'name' && $linkBuilder->sortType == 'desc'): ?>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('surname')) ?>">Фамилия</a>
+                        <?php if($linkBuilder->sortKey == 'surname' && $linkBuilder->sortType == 'asc'): ?>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <?php elseif($linkBuilder->sortKey == 'surname' && $linkBuilder->sortType == 'desc'): ?>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('sgroup')) ?>">Группа</a>
+                        <?php if($linkBuilder->sortKey == 'sgroup' && $linkBuilder->sortType == 'asc'): ?>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <?php elseif($linkBuilder->sortKey == 'sgroup' && $linkBuilder->sortType == 'desc'): ?>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('rating')) ?>">Баллы</a>
+                        <?php if($linkBuilder->sortKey == 'rating' && $linkBuilder->sortType == 'asc'): ?>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                        <?php elseif($linkBuilder->sortKey == 'rating' && $linkBuilder->sortType == 'desc'): ?>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        <?php endif; ?>
+                    </th>
+                </tr>
+                <?php foreach($students as $student): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($student->name) ?></td>
+                        <td><?= htmlspecialchars($student->surname) ?></td>
+                        <td><?= htmlspecialchars($student->sgroup) ?></td>
+                        <td><?= htmlspecialchars($student->rating) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+
+        <?php if($pager->getPages() > 1): ?>
+            <nav id="table_nav">
+                <ul class="pagination pagination-lg">
+                    <!-- Page nubmers start !-->
+                    <?php for($i = 1; $i <= $pager->getPages(); $i++): ?>
+                        <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
+                            <a href="<?= $linkBuilder->getLinkForPage($i) ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+                    <!-- Page nubmers end !-->
+                </ul>
+            </nav>
+        <?php endif; ?>
+
+    <?php else: ?>
+        <h3 class="student-list-message">
+            <?php if($linkBuilder->searchPattern != null): ?>
+                По запросу &laquo<?= htmlspecialchars($linkBuilder->searchPattern) ?>&raquo не найдено ни одного студента.
+            <?php else: ?>
+                Список студентов пуст.
+            <?php endif; ?>
+        </h3>
+    <?php endif; ?>
 </div>
 </body>
 </html>

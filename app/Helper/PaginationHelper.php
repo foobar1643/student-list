@@ -19,11 +19,7 @@ class PaginationHelper {
     }
 
     public function getOffset($page) {
-        $offset = null;
-        for($i = 1; $i < $page; $i++) {
-            $offset += $this->recordsPerPage;
-        }
-        return $offset;
+        return ($page - 1) * $this->recordsPerPage;
     }
 
     public function checkPage($page) {

@@ -1,107 +1,125 @@
-<?php include_once("header.html") ?>
+<?php include("header.html") ?>
 <div id="form_content">
-  <?php if($error): ?>
-    <div class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      <span class="sr-only">Ошибка:</span>
-        <?php if($error): ?>
-            <?php foreach($error as $formError): ?>
-                <?= $formError ?> <br>
+    <?php if($errors): ?>
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Ошибка:</span>
+            <?php foreach($errors as $formError): ?>
+                <?= $formError ?><br>
             <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    <?php if($success): ?>
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+            <?php if($isAuthorized): ?>
+                Информация успешно отредактирована.
+            <?php else: ?>
+                Информация успешно добавлена.
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <h3 id="form-header">
+        <?php if($isAuthorized): ?>
+            Редактирование
+        <?php else: ?>
+            Добавление
         <?php endif; ?>
+            информации
+    </h3>
+    <div class="col-md-7 col-md-offset-4 column">
+        <form id="student-form" class="form-horizontal" method="post">
+            <input type="hidden" name="csrf_field" value="<?= $csrfToken ?>">
+            <div class="form-group <?php if($errors['name']): ?> has-error <?php endif; ?>">
+                <label for="name_field" class="col-sm-2 control-label">Имя</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                     name="name_field" id="name_field"
+                     value="<?= htmlspecialchars($student->name); ?>"
+                     pattern="^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\s]{1,15}$"
+                     title="Имя должно начинаться с большой буквы, быть не длиннее 15 символов, в имени разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
+                     placeholder="Имя" required>
+                </div>
+            </div>
+            <div class="form-group <?php if($errors['surname']): ?> has-error <?php endif; ?>">
+                <label for="surname_field" class="col-sm-2 control-label">Фамилия</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                     name="surname_field" id="surname_field"
+                     value="<?= htmlspecialchars($student->surname); ?>"
+                     pattern="^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\s]{1,20}$"
+                     title="Фамилия должна начинаться с большой буквы, быть не длиннее 20 символов, в фамилии разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
+                     placeholder="Фамилия" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gender_field" class="col-sm-2 control-label">Пол</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="gender_field" id="gender_field">
+                        <option value="male" "<?php if($student->gender == $student::GENDER_MALE): ?> selected <?php endif; ?>">Мужской</option>
+                        <option value="female" "<?php if($student->gender == $student::GENDER_FEMALE): ?> selected <?php endif; ?>">Женский</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group <?php if($errors['sgroup']): ?> has-error <?php endif; ?>">
+                <label for="sgroup_field" class="col-sm-2 control-label">Группа</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"
+                     name="sgroup_field" id="sgroup_field"
+                     value="<?= htmlspecialchars($student->sgroup); ?>"
+                     pattern="^[-А-ЯЁа-яёa-zA-Z0-9]{2,5}$"
+                     title="Имя группы должно быть не короче двух и не длиннее пяти символов, в имени группы разрешается использовать символы латиницы, кириллицы, цифры и дефисы."
+                     placeholder="Группа" required>
+                </div>
+            </div>
+            <div class="form-group <?php if($errors['email']): ?> has-error <?php endif; ?>">
+                <label for="email_field" class="col-sm-2 control-label">E-mail адрес</label>
+                <div class="col-sm-4">
+                    <input type="email" class="form-control"
+                     name="email_field" id="email_field"
+                     value="<?= htmlspecialchars($student->email); ?>"
+                     title="E-mail должен быть указан в формате name@example.com."
+                     placeholder="E-mail" required>
+                </div>
+            </div>
+            <div class="form-group <?php if($errors['byear']): ?> has-error <?php endif; ?>">
+                <label for="byear_field" class="col-sm-2 control-label">Год рождения</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control"
+                     name="byear_field" id="byear_field"
+                     min="1900" max="2000"
+                     value="<?= htmlspecialchars($student->byear); ?>"
+                     title="Год рождения должен быть не меньше 1900 и не больше 2000."
+                     placeholder="Год рождения" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status_field" class="col-sm-2 control-label">Локация</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="status_field" id="status_field">
+                        <option value="nonresident" "<?php if($student->status == $student::STATUS_NONRESIDENT): ?> selected <?php endif; ?>">Приезжий</option>
+                        <option value="resident" "<?php if($student->status == $student::STATUS_RESIDENT): ?> selected <?php endif; ?>">Местный</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group <?php if($errors['rating']): ?> has-error <?php endif; ?>">
+                <label for="rating_field" class="col-sm-2 control-label">Балы ЕГЭ</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control"
+                     name="rating_field" id="rating_field"
+                     min="0" max="<?= $regHelper::MAX_RATING ?>"
+                     value="<?= htmlspecialchars($student->rating); ?>"
+                     title="Баллы должны быть больше 0 и не больше чем <?= $regHelper::MAX_RATING ?>."
+                     placeholder="ЕГЭ" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                    <button type="submit" class="btn btn-default">Подтвердить</button>
+                </div>
+            </div>
+        </form>
     </div>
-  <?php endif; ?>
-  <?php if($success): ?>
-    <div class="alert alert-success" role="alert">
-      <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-        Форма успешно заполнена.
-    </div>
-  <?php endif; ?>
-  <h3>
-      <?php if($_COOKIE['auth']): ?>
-          Редактирование
-      <?php else: ?>
-          Добавление
-      <?php endif; ?>
-      иформации
-  </h3>
-  <form method="post">
-    <input type="hidden" name="csrf_field" value="<?= $csrfToken ?>">
-    <input type="hidden" name="id_field" value="<?= $student->id ?>">
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['name']): ?> has-error <?php endif; ?>">
-        <label for="name_field">Имя</label>
-        <input type="text" class="form-control" name="name_field" id="name_field" placeholder="Имя"
-            value="<?php if($student->name): ?><?= htmlspecialchars($student->name); ?><?php endif; ?>"
-            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z\s]{1,15}$"
-            title="Имя должно быть не длиннее 15 символов, в имени разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
-            required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['surname']): ?> has-error <?php endif; ?>">
-        <label for="surname_field">Фамилия</label>
-        <input type="text" class="form-control" name="surname_field" id="surname_field" placeholder="Фамилия"
-            value="<?php if($student->surname): ?><?= htmlspecialchars($student->surname); ?><?php endif; ?>"
-            pattern="^[А-ЯЁA-Z]{1}[-а-яёa-zА-ЯЁA-Z\s]{1,20}$"
-            title="Фамилия должна быть не длиннее 20 символов, в фамилии разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
-            required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3">
-        <label for="gender_field">Пол</label>
-        <select class="form-control" name="gender_field" id="gender_field">
-          <option value="male" "<?php if($student->gender == 'male'): ?> selected <?php endif; ?>">М</option>
-          <option value="female" "<?php if($student->gender == 'female'): ?> selected <?php endif; ?>">Ж</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['group']): ?> has-error <?php endif; ?>">
-        <label for="group_field">Группа</label>
-        <input type="text" class="form-control" name="sgroup_field" id="group_field" placeholder="Группа"
-            value="<?php if($student->sgroup): ?><?= htmlspecialchars($student->sgroup); ?><?php endif; ?>"
-            pattern="^[-А-ЯЁа-яёa-zA-Z0-9]{2,5}$"
-            title="Имя группы должно быть не короче двух и не длиннее пяти символов, в имени группы разрешается использовать символы латиницы, кириллицы, цифры и дефисы."
-            required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['email']): ?> has-error <?php endif; ?>">
-        <label for="email_field">Адрес email</label>
-        <input type="email" class="form-control" name="email_field" id="email_field" placeholder="Email"
-          value="<?php if($student->email): ?><?= htmlspecialchars($student->email); ?><?php endif; ?>"
-          title="E-mail должен быть указан в формате name@site.com." required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['byear']): ?> has-error <?php endif; ?>">
-        <label for="byear_field">Год рождения</label>
-        <input type="number" class="form-control" name="byear_field" id="byear_field" placeholder="Год рождения"
-            value="<?php if($student->byear): ?><?= htmlspecialchars($student->byear); ?><?php endif; ?>"
-            min="1900" max="2000" title="Год рождения должен быть не меньше 1900 и не больше 2000." required>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3">
-        <label for="location_field">Локация</label>
-        <select class="form-control" name="status_field" id="location_field">
-          <option value="nonresident" "<?php if($student->status == 'nonresident'): ?> selected <?php endif; ?>">Приезжий</option>
-          <option value="resident" "<?php if($student->status == 'resident'): ?> selected <?php endif; ?>">Иногородний</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-3 <?php if($error['rating']): ?> has-error <?php endif; ?>">
-        <label for="rating_field">Балы ЕГЭ</label>
-          <input type="number" name="rating_field" class="form-control" id="rating_field" placeholder="ЕГЭ"
-            value="<?php if(isset($student->rating)): ?><?= htmlspecialchars($student->rating); ?><?php endif; ?>"
-            min="0" max="<?= $formHelper::MAX_RATING ?>" title="Баллы должны быть больше 0 и не больше чем <?= $formHelper::MAX_RATING ?>." required>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-default">Подтвердить</button>
-  </form>
 </div>
 </body>
 </html>

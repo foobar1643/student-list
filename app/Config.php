@@ -1,14 +1,12 @@
 <?php
 
 namespace App;
+
 use \App\Exception\ConfigValueException;
 
 class Config {
 
     /* Default settings */
-    protected $appEnableFiller = false;
-
-    protected $dbType = "pgsql";
     protected $dbHost = "127.0.0.1";
     protected $dbPort = "5412";
     protected $dbUsername = "root";
@@ -16,7 +14,7 @@ class Config {
     protected $dbName = "students";
 
     protected $pagerElemPerPage = 15;
-    
+
     public function loadFromFile($file) {
         $ini = parse_ini_file($file, true);
         foreach($ini as $section => $container) {

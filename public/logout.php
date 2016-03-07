@@ -1,5 +1,9 @@
 <?php
+require("../app/init.php");
 
-setcookie('token', null, -1);
-setcookie('auth', null, -1);
+use \App\Helper\TokenHelper;
+
+$helper = new TokenHelper();
+
+$helper->unsetAuthToken();
 header("Location: index.php");

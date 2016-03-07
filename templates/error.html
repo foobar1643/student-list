@@ -1,9 +1,12 @@
 <html>
     <head><title>503 Service Temporarily Unavailable</title></head>
-    <body bgcolor="white">
-        <center><h1>503 Service Temporarily Unavailable</h1></center>
+    <body bgcolor="white" style="text-align: center;">
+        <h1>503 Service Temporarily Unavailable</h1>
         <?php if(ini_get('display_errors') == 1): ?>
-            <hr><center>Exception message: <?= $e->getMessage() ?></center>
+            <hr>
+            <span>
+                Exception message: <?= $e->__toString() ?>
+            </span>
         <?php endif; ?>
     </body>
 </html>
