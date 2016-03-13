@@ -50,6 +50,22 @@ class RegistrationHelper {
         return $errors;
     }
 
+    public function getUpdatedFields($oldStudent, $newStudent) {
+        foreach($this->getAllowedFields() as $key) {
+            if($newStudent->$key != null) {
+                $oldStudent->$key = $newStudent->$key;
+            }
+        }
+        return $oldStudent;
+    }
+
+    public function getFormData(Student $student) {
+        foreach($this->getAllowedFields() as $key) {
+            $student->$key = isset($_POST[$key . '_field']) ? strval($_POST[$key . '_field']) : '';
+        }
+        return $student;
+    }
+
     public function getAllowedFields() {
         return ['name', 'surname', 'gender', 'sgroup', 'email',
             'byear', 'status', 'rating'];

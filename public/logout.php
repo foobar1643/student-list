@@ -1,9 +1,6 @@
 <?php
 require("../app/init.php");
 
-use \App\Helper\TokenHelper;
-
-$helper = new TokenHelper();
-
-$helper->unsetAuthToken();
+$helper = $container["authHelper"];
+$helper->logOut();
 header("Location: index.php");

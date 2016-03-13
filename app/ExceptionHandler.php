@@ -10,4 +10,11 @@ class ExceptionHandler {
         error_log($e->__toString(), 0);
         include("../templates/error.html");
     }
+
+    function exceptionErrorHandler($errno, $errstr, $errfile, $errline ) {
+        if (!(error_reporting() & $errno)) {
+            return;
+        }
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
 }

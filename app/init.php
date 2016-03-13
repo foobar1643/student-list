@@ -4,10 +4,16 @@ require("../vendor/autoload.php");
 use Pimple\Container;
 use \App\Config;
 use \App\Database\StudentDataGateway;
+use \App\Helper\CsrfHelper;
+use \App\Helper\TableHelper;
+use \App\Helper\AuthHelper;
+use \App\Helper\RegistrationHelper;
+use \App\Controller\AppController;
 use \App\ExceptionHandler;
-use \App\Exception\FatalException;
 
 $container = new Container();
+$handler = new ExceptionHandler();
+
 $container["config"] = function($c) {
     $config = new Config();
     $config->loadFromFile("../config.ini");
@@ -30,13 +36,25 @@ $container["dataGateway"] = function($c) {
     return new StudentDataGateway($c["pdo"]);
 };
 
-function runApp($app) {
-    $handler = new ExceptionHandler();
-    try {
-        $app->run();
-    } catch(PDOException $e) {
-        $handler->handleException($e);
-    } catch(FatalException $e) {
-        $handler->handleException($e);
-    }
+$container["registrationHelper"] = function($c) {
+    return new RegistrationHelper($c["dataGateway"]);
+};
+
+$container["authHelper"] = function($c) {
+    return new AuthHelper($c["dataGateway"]);
+};
+
+$container["csrfHelper"] = function($c) {
+    return new CsrfHelper();
+};
+
+$container["tableHelper"] = function($c) {
+    return new TableHelper();
+};
+
+set_exception_handler(array($handler, 'handleException'));
+set_error_handler(array($handler, 'exceptionErrorHandler'));
+
+function runApp(AppController $app) {
+    $app->run();
 }

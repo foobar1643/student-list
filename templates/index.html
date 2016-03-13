@@ -8,7 +8,14 @@
         </div>
     <?php endif; ?>
 
-    <?php if($students || isset($linkBuilder->searchPattern)): ?>
+    <?php if($success): ?>
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+            Информация успешно отредактирована.
+        </div>
+    <?php endif; ?>
+
+    <?php if($students || $tableHelper->searchPattern != null): ?>
         <form method="get">
             <div class="row" id="search_box">
                 <div class="col-lg-4 col-lg-offset-4">
@@ -18,7 +25,7 @@
                         </span>
                         <input type="text" name="search" class="form-control"
                         placeholder="Введите запрос для поиска"
-                        value="<?= htmlspecialchars($linkBuilder->searchPattern) ?>" required>
+                        value="<?= htmlspecialchars($tableHelper->searchPattern) ?>" required>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div>
@@ -26,8 +33,8 @@
     <?php endif; ?>
 
     <?php if($students): ?>
-        <?php if($linkBuilder->searchPattern != null): ?>
-            <p class="search-info">Показаны результаты по запросу &laquo<?= htmlspecialchars($linkBuilder->searchPattern) ?>&raquo</p>
+        <?php if($tableHelper->searchPattern != null): ?>
+            <p class="search-info">Показаны результаты по запросу &laquo;<?= htmlspecialchars($tableHelper->searchPattern) ?>&raquo;</p>
             <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
         <?php endif; ?>
         <div class="panel panel-default">
@@ -35,38 +42,14 @@
             <div class="panel-heading">Список студентов</div>
             <table class="table">
                 <tr>
-                    <th>
-                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('name')) ?>">Имя</a>
-                        <?php if($linkBuilder->sortKey == 'name' && $linkBuilder->sortType == 'asc'): ?>
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        <?php elseif($linkBuilder->sortKey == 'name' && $linkBuilder->sortType == 'desc'): ?>
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        <?php endif; ?>
-                    </th>
-                    <th>
-                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('surname')) ?>">Фамилия</a>
-                        <?php if($linkBuilder->sortKey == 'surname' && $linkBuilder->sortType == 'asc'): ?>
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        <?php elseif($linkBuilder->sortKey == 'surname' && $linkBuilder->sortType == 'desc'): ?>
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        <?php endif; ?>
-                    </th>
-                    <th>
-                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('sgroup')) ?>">Группа</a>
-                        <?php if($linkBuilder->sortKey == 'sgroup' && $linkBuilder->sortType == 'asc'): ?>
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        <?php elseif($linkBuilder->sortKey == 'sgroup' && $linkBuilder->sortType == 'desc'): ?>
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        <?php endif; ?>
-                    </th>
-                    <th>
-                        <a href="<?= htmlspecialchars($linkBuilder->getLinkForSorting('rating')) ?>">Баллы</a>
-                        <?php if($linkBuilder->sortKey == 'rating' && $linkBuilder->sortType == 'asc'): ?>
-                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                        <?php elseif($linkBuilder->sortKey == 'rating' && $linkBuilder->sortType == 'desc'): ?>
-                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                        <?php endif; ?>
-                    </th>
+                    <?php foreach($tableHelper->getTableHeader() as $key => $name): ?>
+                        <th>
+                            <a href="<?= htmlspecialchars($tableHelper->getLinkForSorting($key)) ?>"><?= $name ?></a>
+                            <?php if($tableHelper->sortKey == $key): ?>
+                                <span class="glyphicon <?= $tableHelper->getGlyphicon() ?>" aria-hidden="true"></span>
+                            <?php endif; ?>
+                        </th>
+                    <?php endforeach; ?>
                 </tr>
                 <?php foreach($students as $student): ?>
                     <tr>
@@ -85,7 +68,7 @@
                     <!-- Page nubmers start !-->
                     <?php for($i = 1; $i <= $pager->getPages(); $i++): ?>
                         <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
-                            <a href="<?= $linkBuilder->getLinkForPage($i) ?>">
+                            <a href="<?= $tableHelper->getLinkForPage($i) ?>">
                                 <?= $i ?>
                             </a>
                         </li>
@@ -97,8 +80,8 @@
 
     <?php else: ?>
         <h3 class="student-list-message">
-            <?php if($linkBuilder->searchPattern != null): ?>
-                По запросу &laquo<?= htmlspecialchars($linkBuilder->searchPattern) ?>&raquo не найдено ни одного студента.
+            <?php if($tableHelper->searchPattern != null): ?>
+                По запросу &laquo;<?= htmlspecialchars($tableHelper->searchPattern) ?>&raquo; не найдено ни одного студента.
             <?php else: ?>
                 Список студентов пуст.
             <?php endif; ?>

@@ -70,9 +70,9 @@ class StudentDataGateway {
     }
 
     public function checkEmail($email, $token) {
-        $query = $this->pdo->prepare("SELECT COUNT(*) FROM students WHERE email = :email_bind AND NOT EXISTS (SELECT * FROM students WHERE token = :token_bind AND email = :email_bind)");
+        $query = $this->pdo->prepare("SELECT COUNT(*) FROM students WHERE email = lower(:email_bind) AND token != :token_bind");
         $query->bindValue(":email_bind", $email, \PDO::PARAM_STR);
-        $query->bindValue(":token_bind", $token, \PDO::PARAM_STR);
+        $query->bindValue(":token_bind", strval($token), \PDO::PARAM_STR);
         $query->execute();
         return $query->fetchColumn();
     }

@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use Pimple\Container;
 use \App\Model\Student;
-use \App\Helper\TableLinkHelper;
 use \App\Helper\PaginationHelper;
 
-class ControllerIndex {
+class ControllerIndex implements AppController {
 
     private $container;
 
@@ -19,7 +18,8 @@ class ControllerIndex {
         $pageTitle = "Главная страница";
         $navTitle = "index";
         $error = false;
-        $linkBuilder = new TableLinkHelper();
+        $success = false;
+        $tableHelper = $this->container["tableHelper"];
         $config = $this->container["config"];
         $dataGateway = $this->container["dataGateway"];
         $searchPattern = null;
@@ -29,7 +29,7 @@ class ControllerIndex {
         $currentPattern = $sortingPatterns[3];
         if(isset($_GET['page'])) {
             $currentPage = intval($_GET['page']);
-            $linkBuilder->pageNumber = intval($_GET['page']);
+            $tableHelper->pageNumber = intval($_GET['page']);
         }
         if(isset($_GET['sort']) && isset($_GET['type']) && in_array($_GET['sort'], $sortingPatterns)) {
             $currentPattern = $_GET['sort'];
@@ -38,17 +38,20 @@ class ControllerIndex {
         if(isset($_GET['search'])) {
             $searchQuery = trim($_GET['search']);
             if($searchQuery != "") {
-                $linkBuilder->searchPattern = $searchQuery;
+                $tableHelper->searchPattern = $searchQuery;
                 $searchPattern = $searchQuery;
             } else {
                 $error = true;
             }
         }
+        if(isset($_GET['notify']) && $_GET['notify'] == 'success' && $error == false) {
+            $success = true;
+        }
         $studentsCount = $dataGateway->getTotalStudents($searchPattern);
         $pager = new PaginationHelper($studentsCount, $config->getValue('pager', 'elemPerPage'));
         $currentPage = $pager->checkPage($currentPage);
-        $linkBuilder->sortKey = $currentPattern;
-        $linkBuilder->sortType = $sortingType;
+        $tableHelper->sortKey = $currentPattern;
+        $tableHelper->sortType = $sortingType;
         $students = $dataGateway->selectStudents($pager->getOffset($currentPage), $currentPattern, $sortingType,
             $searchPattern, $config->getValue('pager', 'elemPerPage'));
         include("../templates/index.html");

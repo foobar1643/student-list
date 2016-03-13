@@ -27,12 +27,12 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li "<?php if($navTitle == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
-                        <?php if($_COOKIE['auth']): ?>
+                        <?php if($this->container["authHelper"]->isAuthorized()): ?>
                             <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Редактировать</a></li>
+                            <li><a href="logout.php">Выход</a></li>
                         <?php else: ?>
                             <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
                         <?php endif; ?>
-                        <li><a href="logout.php">Выход</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

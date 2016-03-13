@@ -49,12 +49,8 @@ if(!isset($options["c"]) || $options["c"] <= 0 || isset($options["h"])) {
     die(outputHelpMessage());
 }
 
-try {
-    $names = readNamesFile("data/names.txt");
-    $surnames = readNamesFile("data/surnames.txt");
-} catch(FileOperationException $e) {
-    die($e->__toString());
-}
+$names = readNamesFile("data/names.txt");
+$surnames = readNamesFile("data/surnames.txt");
 
 $dataGateway = $container["dataGateway"];
 for($i = 0; $i < $options["c"]; $i++) {

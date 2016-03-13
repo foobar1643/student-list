@@ -9,18 +9,8 @@
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-    <?php if($success): ?>
-        <div class="alert alert-success" role="alert">
-            <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-            <?php if($isAuthorized): ?>
-                Информация успешно отредактирована.
-            <?php else: ?>
-                Информация успешно добавлена.
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
     <h3 id="form-header">
-        <?php if($isAuthorized): ?>
+        <?php if($this->container["authHelper"]->isAuthorized()): ?>
             Редактирование
         <?php else: ?>
             Добавление
