@@ -4,10 +4,6 @@ namespace App\Helper;
 
 class CsrfHelper {
 
-    public function getCsrfToken() {
-        return $_COOKIE['token'];
-    }
-
     public function validateCsrfToken($token) {
         if(preg_match("/(^[a-zA-Z0-9]{45}$)/", $token)) {
             return true;
