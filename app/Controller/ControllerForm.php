@@ -28,7 +28,7 @@ class ControllerForm implements AppController {
             $student = $auth;
             $pageTitle  = "Редактировать запись";
         }
-        if($_SERVER['REQUEST_METHOD'] == "POST" && $csrfHelper->checkCsrfToken($_POST['csrf_field'])) {
+        if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['csrf_field']) && $csrfHelper->checkCsrfToken($_POST['csrf_field'])) {
             $student = $regHelper->getFormData($student);
             $errors = $regHelper->validateStudent($student);
             if(!$errors) {
