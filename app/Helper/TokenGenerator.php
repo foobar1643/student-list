@@ -5,6 +5,7 @@ namespace App\Helper;
 class TokenGenerator {
 
     public function generateToken($length) {
+        $result = null;
         $source = str_split('abcdefghijklmnopqrstuvwxyz'
           .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
           .'0123456789');
