@@ -13,8 +13,8 @@ CREATE TABLE students (
     rating integer NOT NULL,
     token character varying(250),
     CONSTRAINT table_pkey PRIMARY KEY (id),
-    CONSTRAINT name_check CHECK(name ~ '^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z[:space:]]{1,15}$'),
-    CONSTRAINT surname_check CHECK(surname ~ '^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z[:space:]]{1,20}$'),
+    CONSTRAINT name_check CHECK(name ~ '^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\\s]{1,15}$'),
+    CONSTRAINT surname_check CHECK(surname ~ '^[А-ЯЁA-Z][-''`а-яёa-zА-ЯЁA-Z\\s]{1,20}$'),
     CONSTRAINT sgrop_check CHECK(sgroup ~ '^[-А-ЯЁа-яёa-zA-Z0-9]{2,5}$'),
     CONSTRAINT byear_check CHECK ((byear)::numeric BETWEEN 1900 AND 2000),
     CONSTRAINT rating_check CHECK (rating BETWEEN 0 AND 300)

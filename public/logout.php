@@ -1,6 +1,5 @@
 <?php
 require("../app/init.php");
 
-$helper = $container["authHelper"];
-$helper->logOut();
+$container["authHelper"]->logOut();
 header("Location: index.php");

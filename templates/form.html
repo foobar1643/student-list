@@ -1,6 +1,6 @@
 <?php include("header.html") ?>
 <div id="form_content">
-    <?php if($errors): ?>
+    <?php if(isset($errors)): ?>
         <div class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Ошибка:</span>
@@ -10,7 +10,7 @@
         </div>
     <?php endif; ?>
     <h3 id="form-header">
-        <?php if($this->container["authHelper"]->isAuthorized()): ?>
+        <?php if($isAuthorized): ?>
             Редактирование
         <?php else: ?>
             Добавление
@@ -20,7 +20,7 @@
     <div class="col-md-7 col-md-offset-4 column">
         <form id="student-form" class="form-horizontal" method="post">
             <input type="hidden" name="csrf_field" value="<?= $csrfToken ?>">
-            <div class="form-group <?php if($errors['name']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['name'])): ?> has-error <?php endif; ?>">
                 <label for="name_field" class="col-sm-2 control-label">Имя</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control"
@@ -31,14 +31,14 @@
                      placeholder="Имя" required>
                 </div>
             </div>
-            <div class="form-group <?php if($errors['surname']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['surname'])): ?> has-error <?php endif; ?>">
                 <label for="surname_field" class="col-sm-2 control-label">Фамилия</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control"
                      name="surname_field" id="surname_field"
                      value="<?= htmlspecialchars($student->surname); ?>"
-                     pattern="^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\s]{1,20}$"
-                     title="Фамилия должна начинаться с большой буквы, быть не длиннее 20 символов, в фамилии разрешается использовать символы латиницы, кириллицы, дефисы и пробелы."
+                     pattern="^[А-ЯЁA-Z][-'`а-яёa-zА-ЯЁA-Z\s]{1,20}$"
+                     title="Фамилия должна начинаться с большой буквы, быть не длиннее 20 символов, в фамилии разрешается использовать символы латиницы, кириллицы, апострофы, дефисы и пробелы."
                      placeholder="Фамилия" required>
                 </div>
             </div>
@@ -46,12 +46,12 @@
                 <label for="gender_field" class="col-sm-2 control-label">Пол</label>
                 <div class="col-sm-4">
                     <select class="form-control" name="gender_field" id="gender_field">
-                        <option value="male" "<?php if($student->gender == $student::GENDER_MALE): ?> selected <?php endif; ?>">Мужской</option>
-                        <option value="female" "<?php if($student->gender == $student::GENDER_FEMALE): ?> selected <?php endif; ?>">Женский</option>
+                        <option value="male"<?php if($student->gender == $student::GENDER_MALE): ?> selected<?php endif; ?>>Мужской</option>
+                        <option value="female"<?php if($student->gender == $student::GENDER_FEMALE): ?> selected<?php endif; ?>>Женский</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group <?php if($errors['sgroup']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['sgroup'])): ?> has-error <?php endif; ?>">
                 <label for="sgroup_field" class="col-sm-2 control-label">Группа</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control"
@@ -62,7 +62,7 @@
                      placeholder="Группа" required>
                 </div>
             </div>
-            <div class="form-group <?php if($errors['email']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['email'])): ?> has-error <?php endif; ?>">
                 <label for="email_field" class="col-sm-2 control-label">E-mail адрес</label>
                 <div class="col-sm-4">
                     <input type="email" class="form-control"
@@ -72,7 +72,7 @@
                      placeholder="E-mail" required>
                 </div>
             </div>
-            <div class="form-group <?php if($errors['byear']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['byear'])): ?> has-error <?php endif; ?>">
                 <label for="byear_field" class="col-sm-2 control-label">Год рождения</label>
                 <div class="col-sm-4">
                     <input type="number" class="form-control"
@@ -87,12 +87,12 @@
                 <label for="status_field" class="col-sm-2 control-label">Локация</label>
                 <div class="col-sm-4">
                     <select class="form-control" name="status_field" id="status_field">
-                        <option value="nonresident" "<?php if($student->status == $student::STATUS_NONRESIDENT): ?> selected <?php endif; ?>">Приезжий</option>
-                        <option value="resident" "<?php if($student->status == $student::STATUS_RESIDENT): ?> selected <?php endif; ?>">Местный</option>
+                        <option value="nonresident"<?php if($student->status == $student::STATUS_NONRESIDENT): ?> selected<?php endif; ?>>Приезжий</option>
+                        <option value="resident"<?php if($student->status == $student::STATUS_RESIDENT): ?> selected<?php endif; ?>>Местный</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group <?php if($errors['rating']): ?> has-error <?php endif; ?>">
+            <div class="form-group <?php if(isset($errors['rating'])): ?> has-error <?php endif; ?>">
                 <label for="rating_field" class="col-sm-2 control-label">Балы ЕГЭ</label>
                 <div class="col-sm-4">
                     <input type="number" class="form-control"

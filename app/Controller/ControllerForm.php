@@ -23,26 +23,35 @@ class ControllerForm implements AppController {
         $csrfHelper = $this->container["csrfHelper"];
         $authHelper = $this->container["authHelper"];
         $csrfToken = $csrfHelper->setCsrfToken();
-        $auth = $authHelper->getAuthorizedStudent();
-        if($auth != false) {
-            $student = $auth;
+        $isAuthorized = $authHelper->isAuthorized();
+        if($isAuthorized) {
+            $student = $authHelper->getAuthorizedStudent();
             $pageTitle  = "Редактировать запись";
         }
         if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['csrf_field']) && $csrfHelper->checkCsrfToken($_POST['csrf_field'])) {
-            $student = $regHelper->getFormData($student);
+            $student = $this->getFormData($student);
             $errors = $regHelper->validateStudent($student);
             if(!$errors) {
-                if($auth != false) { // authorized
-                    $auth = $regHelper->getUpdatedFields($auth, $student);
-                    $dataGateway->updateStudent($auth);
+                if($isAuthorized) { // authorized
+                    $dataGateway->updateStudent($student);
                 } else { // not authorized
-                    $student->token = $authHelper->authorizeStudent();
+                    $student->token = $authHelper->createAuthToken();
                     $dataGateway->addStudent($student);
+                    $authHelper->authorizeStudent($student);
                 }
                 header("Location: index.php?notify=success");
-                die();
+                return;
             }
         }
         include("../templates/form.html");
+    }
+
+    public function getFormData(Student $student) {
+        foreach($this->container["registrationHelper"]->getAllowedFields() as $key) {
+            if(isset($_POST["{$key}_field"])) {
+                $student->$key = strval($_POST["{$key}_field"]);
+            }
+        }
+        return $student;
     }
 }

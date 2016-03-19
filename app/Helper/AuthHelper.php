@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use \App\Model\Student;
 use \App\Database\StudentDataGateway;
 
 class AuthHelper {
@@ -15,28 +16,38 @@ class AuthHelper {
     public function getAuthorizedStudent() {
         if(isset($_COOKIE['auth'])) {
             $student = $this->dataGateway->selectStudent($_COOKIE['auth']);
-            if($student->id != null) {
+            if($student != null) {
                 return $student;
             }
+        }
+        return null;
+    }
+
+    public function authorizeStudent(Student $student) {
+        if($student->token != null) {
+            setcookie("auth", $student->token, time()+36000000);
+            return true;
         }
         return false;
     }
 
     public function isAuthorized() {
         if(isset($_COOKIE['auth'])) {
-            return true;
+            $student = $this->dataGateway->selectStudent($_COOKIE['auth']);
+            if($student != null) {
+                return true;
+            }
         }
         return false;
     }
 
-    public function authorizeStudent() {
+    public function createAuthToken() {
         $generator = new TokenGenerator();
         $token = $generator->generateToken(45);
-        setcookie("auth", $token, time()+36000000);
         return $token;
     }
 
     public function logOut() {
-        setcookie('auth', null, -1);
+        setcookie('auth', "", 0);
     }
 }

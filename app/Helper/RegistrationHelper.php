@@ -21,11 +21,11 @@ class RegistrationHelper {
             $errors['name'] = "Имя должно начинаться с большой буквы, быть не длиннее 15 символов, в имени "
             ."разрешается использовать символы латиницы, кириллицы, цифры, дефисы и пробелы.";
         }
-        if(!preg_match("/^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\\s]{1,20}$/u", $student->surname)) {
+        if(!preg_match("/^[А-ЯЁA-Z][-'`а-яёa-zА-ЯЁA-Z\\s]{1,20}$/u", $student->surname)) {
             $errors['surname'] = "Фамилия должна начинаться с большой буквы, быть не длиннее 20 символов, в фамилии "
-            ."разрешается использовать символы латиницы, кириллицы, цифры, дефисы и пробелы.";
+            ."разрешается использовать символы латиницы, кириллицы, апострофы, дефисы и пробелы.";
         }
-        if($student->gender != Student::GENDER_MALE && Student::GENDER_FEMALE != "female") {
+        if($student->gender != Student::GENDER_MALE && $student->gender != Student::GENDER_FEMALE) {
             $errors['gender'] = "Пол должен быть выбран из списка.";
         }
         if(!filter_var($student->email, FILTER_VALIDATE_EMAIL)) {
@@ -48,22 +48,6 @@ class RegistrationHelper {
             $errors['email'] = "Такой e-mail уже занят другим пользователем.";
         }
         return $errors;
-    }
-
-    public function getUpdatedFields($oldStudent, $newStudent) {
-        foreach($this->getAllowedFields() as $key) {
-            if($newStudent->$key != null) {
-                $oldStudent->$key = $newStudent->$key;
-            }
-        }
-        return $oldStudent;
-    }
-
-    public function getFormData(Student $student) {
-        foreach($this->getAllowedFields() as $key) {
-            $student->$key = isset($_POST[$key . '_field']) ? strval($_POST[$key . '_field']) : '';
-        }
-        return $student;
     }
 
     public function getAllowedFields() {

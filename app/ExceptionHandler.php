@@ -11,7 +11,7 @@ class ExceptionHandler {
         include("../templates/error.html");
     }
 
-    function exceptionErrorHandler($errno, $errstr, $errfile, $errline ) {
+    function exceptionErrorHandler($errno, $errstr, $errfile, $errline) {
         if (!(error_reporting() & $errno)) {
             return;
         }
