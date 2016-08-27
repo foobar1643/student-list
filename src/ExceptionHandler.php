@@ -8,7 +8,7 @@ class ExceptionHandler {
         header('HTTP/1.1 503 Service Temporarily Unavailable');
         header('Status: 503 Service Temporarily Unavailable');
         error_log($e->__toString(), 0);
-        include("../templates/error.html");
+        include("../templates/error.phtml");
     }
 
     function exceptionErrorHandler($errno, $errstr, $errfile, $errline) {

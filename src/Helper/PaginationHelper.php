@@ -2,34 +2,45 @@
 
 namespace App\Helper;
 
-class PaginationHelper {
+class PaginationHelper
+{
 
     private $records;
     private $recordsPerPage;
     private $totalPages;
 
-    public function __construct($totalRecords, $recordsPerPage) {
+    public function __construct($totalRecords, $recordsPerPage)
+    {
         $this->records = $totalRecords;
         $this->recordsPerPage = $recordsPerPage;
         $this->totalPages = $this->countPages();
     }
 
-    public function getPages() {
+    public function getPages()
+    {
         return $this->totalPages;
     }
 
-    public function getOffset($page) {
+    public function getOffset($page)
+    {
         return ($page - 1) * $this->recordsPerPage;
     }
 
-    public function checkPage($page) {
+    public function getLimit()
+    {
+        return $this->recordsPerPage;
+    }
+
+    public function checkPage($page)
+    {
         if($page > $this->totalPages) {
             return 1;
         }
         return $page;
     }
 
-    private function countPages() {
+    private function countPages()
+    {
         $pages = null;
         $page = $this->records;
         while(0 < $page) {

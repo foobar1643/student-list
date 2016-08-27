@@ -2,14 +2,14 @@
 require("../vendor/autoload.php");
 
 use Pimple\Container;
-use \App\Config;
-use \App\Database\StudentDataGateway;
-use \App\Helper\CsrfHelper;
-use \App\Helper\TableHelper;
-use \App\Helper\AuthHelper;
-use \App\Helper\RegistrationHelper;
-use \App\Controller\AppController;
-use \App\ExceptionHandler;
+use App\Config;
+use App\Database\StudentDataGateway;
+use App\Helper\CsrfHelper;
+use App\Helper\TableHelper;
+use App\Helper\AuthHelper;
+use App\Helper\RegistrationHelper;
+use App\Controller\AppController;
+use App\ExceptionHandler;
 
 $container = new Container();
 $handler = new ExceptionHandler();
@@ -46,10 +46,6 @@ $container["authHelper"] = function($c) {
 
 $container["csrfHelper"] = function($c) {
     return new CsrfHelper();
-};
-
-$container["tableHelper"] = function($c) {
-    return new TableHelper();
 };
 
 set_exception_handler(array($handler, 'handleException'));

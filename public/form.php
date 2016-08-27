@@ -1,7 +1,7 @@
 <?php
-require("../app/init.php");
+require("../src/init.php");
 
-use \App\Controller\ControllerForm;
+use App\Controller\ControllerForm;
 
 $app = new ControllerForm($container);
-runApp($app);
+$app();

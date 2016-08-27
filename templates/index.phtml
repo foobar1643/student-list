@@ -1,17 +1,14 @@
-<?php include("header.html") ?>
+<?php
+    $pageTitle = "Главная страница";
+    $navTitle = "index";
+?>
+<?php include("header.phtml") ?>
 <div id="content">
-    <?php if($error): ?>
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Ошибка:</span>
-            Вы не заполнили поле поиска.
-        </div>
-    <?php endif; ?>
 
     <?php if($success): ?>
         <div class="alert alert-success" role="alert">
             <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-            Информация успешно отредактирована.
+            Информация успешно добавлена в базу данных.
         </div>
     <?php endif; ?>
 
@@ -42,21 +39,21 @@
             <div class="panel-heading">Список студентов</div>
             <table class="table">
                 <tr>
-                    <?php foreach($tableHelper->getTableHeader() as $key => $name): ?>
+                    <?php foreach($tableHelper->getTableHeaders() as $key => $name): ?>
                         <th>
-                            <a href="<?= htmlspecialchars($tableHelper->getLinkForSorting($key)) ?>"><?= $name ?></a>
+                            <a href="<?= htmlspecialchars($tableHelper->getSortingLink($key)) ?>"><?= $name ?></a>
                             <?php if($tableHelper->sortKey == $key): ?>
-                                <span class="glyphicon <?= $tableHelper->getGlyphicon() ?>" aria-hidden="true"></span>
+                                <span class="glyphicon <?= $tableHelper->getSortingGlyphicon() ?>" aria-hidden="true"></span>
                             <?php endif; ?>
                         </th>
                     <?php endforeach; ?>
                 </tr>
                 <?php foreach($students as $student): ?>
                     <tr>
-                        <td><?= htmlspecialchars($student->name) ?></td>
-                        <td><?= htmlspecialchars($student->surname) ?></td>
-                        <td><?= htmlspecialchars($student->sgroup) ?></td>
-                        <td><?= htmlspecialchars($student->rating) ?></td>
+                        <td><?= htmlspecialchars($student->getName()) ?></td>
+                        <td><?= htmlspecialchars($student->getSurname()) ?></td>
+                        <td><?= htmlspecialchars($student->getGroup()) ?></td>
+                        <td><?= htmlspecialchars($student->getRating()) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -65,15 +62,27 @@
         <?php if($pager->getPages() > 1): ?>
             <nav id="table_nav">
                 <ul class="pagination pagination-lg">
+                    <li <?php if($currentPage <= 1): ?> class="disabled" <?php endif; ?> >
+                        <a <?php if($currentPage > 1): ?> href="<?= $tableHelper->getPageLink($currentPage - 1) ?>" aria-label="Previous" <?php endif; ?> >
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
                     <!-- Page nubmers start !-->
-                    <?php for($i = 1; $i <= $pager->getPages(); $i++): ?>
+                    <?php $starterPage = ($currentPage > 1) ? $currentPage - 1 : $currentPage; ?>
+                    <?php $pagesTotal = ($currentPage + 2) <= $pager->getPages() ? $currentPage + 2 : $currentPage + ($pager->getPages() - $currentPage) ?>
+                    <?php for($i = $starterPage; $i <= $pagesTotal; $i++): ?>
                         <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
-                            <a href="<?= $tableHelper->getLinkForPage($i) ?>">
+                            <a <?php if($i !== $currentPage): ?> href="<?= $tableHelper->getPageLink($i) ?>" <?php endif; ?> >
                                 <?= $i ?>
                             </a>
                         </li>
                     <?php endfor; ?>
                     <!-- Page nubmers end !-->
+                    <li <?php if($currentPage >= $pager->getPages()): ?> class="disabled" <?php endif; ?> >
+                        <a <?php if($currentPage < $pager->getPages()): ?> href="<?= $tableHelper->getPageLink($currentPage + 1) ?>" aria-label="Next" <?php endif; ?>>
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         <?php endif; ?>

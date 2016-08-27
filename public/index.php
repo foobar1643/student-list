@@ -1,7 +1,7 @@
 <?php
-require("../app/init.php");
+require("../src/init.php");
 
-use \App\Controller\ControllerIndex;
+use App\Controller\ControllerIndex;
 
 $app = new ControllerIndex($container);
-runApp($app);
+$app();

@@ -2,9 +2,10 @@
 
 namespace App\Helper;
 
-class TokenGenerator {
-
-    public function generateToken($length) {
+class TokenGenerator
+{
+    public static function generateToken($length)
+    {
         $result = null;
         $source = str_split('abcdefghijklmnopqrstuvwxyz'
           .'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
