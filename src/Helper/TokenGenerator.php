@@ -4,6 +4,13 @@ namespace App\Helper;
 
 class TokenGenerator
 {
+    /**
+     * Generates a random string with a given length. This is not cryptographically secure.
+     *
+     * @param int $length A length of a random string.
+     *
+     * @return string
+     */
     public static function generateToken($length)
     {
         $result = null;

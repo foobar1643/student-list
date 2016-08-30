@@ -2,17 +2,35 @@
 
 namespace App\Database;
 
-use \App\Entity\Student;
+use App\Entity\Student;
 
+/**
+ * Provides a simple interface that works with a 'students' table in the database.
+ *
+ * @author foobar1643 <foobar76239@gmail.com>
+ */
 class StudentDataGateway
 {
+    /** @var PDO $pdo PDO object. */
     private $pdo;
 
+    /**
+     * Constructor.
+     *
+     * @param PDO $pdo PDO object.
+     */
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Adds a student to the database and returns the ID of the added student.
+     *
+     * @param Student $student A File entity to be added.
+     *
+     * @return int
+     */
     public function addStudent(Student $student)
     {
         $query = $this->pdo->prepare("INSERT INTO students(name, surname, gender, sgroup, email, byear, status, rating, token) "
@@ -30,6 +48,13 @@ class StudentDataGateway
         return $query->fetchColumn();
     }
 
+    /**
+     * Updates student in the database.
+     *
+     * @param Student $student A File entity to update.
+     *
+     * @return void
+     */
     public function updateStudent(Student $student)
     {
         $query = $this->pdo->prepare("UPDATE students SET name = :name_bind, surname = :surname_bind, "
@@ -47,6 +72,13 @@ class StudentDataGateway
         $query->execute();
     }
 
+    /**
+     * Returns a number of total students in the database.
+     *
+     * @param string $searchPattern Search pattern to use.
+     *
+     * @return int
+     */
     public function getTotalStudents($searchPattern = null)
     {
         $query = $this->pdo->prepare("SELECT COUNT(*) FROM students WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search_bind");
@@ -55,6 +87,17 @@ class StudentDataGateway
         return $query->fetchColumn();
     }
 
+    /**
+     * Searches students in the database.
+     *
+     * @param string $searchPattern Search pattern to use.
+     * @param int $offset Offset in the database.
+     * @param int $limit Limit in the database.
+     * @param string $sortingPattern Sorting pattern.
+     * @param string $sortingType Sorting type.
+     *
+     * @return array
+     */
     public function searchStudents($searchPattern, $offset, $limit, $sortingPattern, $sortingType)
     {
         $query = $this->pdo->prepare("SELECT * FROM students WHERE CONCAT(name, ' ', surname, ' ', sgroup)"
@@ -66,6 +109,13 @@ class StudentDataGateway
         return $query->fetchAll(\PDO::FETCH_CLASS, "\App\Entity\Student");
     }
 
+    /**
+     * Selects a single student from the database.
+     *
+     * @param string $token Student auth token.
+     *
+     * @return Student
+     */
     public function selectStudent($token)
     {
         $student = new Student();
@@ -76,6 +126,14 @@ class StudentDataGateway
         return $query->fetch();
     }
 
+    /**
+     * Checks if given email exists in the database.
+     *
+     * @param string $email An email to check.
+     * @param string $token Student auth token.
+     *
+     * @return int
+     */
     public function checkEmail($email, $token)
     {
         $query = $this->pdo->prepare("SELECT COUNT(*) FROM students WHERE email = lower(:email_bind) AND token != :token_bind");

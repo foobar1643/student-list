@@ -5,16 +5,35 @@ namespace App\Helper;
 use App\Entity\Student;
 use App\Database\StudentDataGateway;
 
+/**
+ * Validates Student entity and returns allowed fields in edit form.
+ *
+ * @author foobar1643 <foobar76239@gmail.com>
+ */
 class RegistrationHelper {
 
+    /** @var int MAX_RATING Max rating for student to enter. */
     const MAX_RATING = 300;
 
+    /** @var StudentDataGateway $dataGateway StudentDataGateway instance. */
     private $dataGateway;
 
+    /**
+     * Constructor.
+     *
+     * @param StudentDataGateway $gateway StudentDataGateway instance.
+     */
     public function __construct(StudentDataGateway $gateway) {
         $this->dataGateway = $gateway;
     }
 
+    /**
+     * Validates Student object.
+     *
+     * @param Student $student Student object to validate.
+     *
+     * @return array
+     */
     public function validateStudent(Student $student) {
         $errors = null;
         if(!preg_match("/^[А-ЯЁA-Z][-а-яёa-zА-ЯЁA-Z\\s]{1,15}$/u", $student->getName())) {
@@ -50,6 +69,11 @@ class RegistrationHelper {
         return $errors;
     }
 
+    /**
+     * Returns an array of allowed POST fields in student add/edit form.
+     *
+     * @return array
+     */
     public function getAllowedFields() {
         return ['name', 'surname', 'gender', 'group', 'email',
             'birthYear', 'status', 'rating'];
