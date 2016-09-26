@@ -1,13 +1,19 @@
 <?php
+/**
+ * This file is part of Student-List application.
+ *
+ * @author foobar1643 <foobar76239@gmail.com>
+ * @copyright 2016 foobar1643
+ * @package Students\Database
+ * @license https://github.com/foobar1643/student-list/blob/master/LICENSE.md MIT License
+ */
 
-namespace App\Database;
+namespace Students\Database;
 
-use App\Entity\Student;
+use Students\Entity\Student;
 
 /**
  * Provides a simple interface that works with a 'students' table in the database.
- *
- * @author foobar1643 <foobar76239@gmail.com>
  */
 class StudentDataGateway
 {
@@ -106,7 +112,7 @@ class StudentDataGateway
         $query->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $query->bindValue(':search_bind', "%{$searchPattern}%", \PDO::PARAM_STR);
         $query->execute();
-        return $query->fetchAll(\PDO::FETCH_CLASS, "\App\Entity\Student");
+        return $query->fetchAll(\PDO::FETCH_CLASS, "Students\Entity\Student");
     }
 
     /**
@@ -122,7 +128,7 @@ class StudentDataGateway
         $query = $this->pdo->prepare("SELECT * FROM students WHERE token = :token_bind");
         $query->bindValue("token_bind", $token, \PDO::PARAM_STR);
         $query->execute();
-        $query->setFetchMode(\PDO::FETCH_CLASS, "\App\Entity\Student");
+        $query->setFetchMode(\PDO::FETCH_CLASS, "Students\Entity\Student");
         return $query->fetch();
     }
 

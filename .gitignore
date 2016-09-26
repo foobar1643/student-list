@@ -1,3 +1,15 @@
-# Ignoring composer binary files and directories
-vendor/
+# Mandatory composer executable, although i use it globally
 composer.phar
+
+# Ignore broken documentation, dependencies and unfinished tests
+docs/*
+vendor/*
+tests/*
+
+# Ignore bootstrap and jQuery
+public/media/bootstrap/*
+public/media/javascript/jquery.*
+
+# Ignore design mockups
+templates/mockup/*
+templates/mockup-alt/*

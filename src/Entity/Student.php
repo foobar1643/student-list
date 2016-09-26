@@ -1,11 +1,25 @@
 <?php
+/**
+ * This file is part of Student-List application.
+ *
+ * @author foobar1643 <foobar76239@gmail.com>
+ * @copyright 2016 foobar1643
+ * @package Students\Entity
+ * @license https://github.com/foobar1643/student-list/blob/master/LICENSE.md MIT License
+ */
 
-namespace App\Entity;
+namespace Students\Entity;
 
+use Psr\Http\Message\ServerRequestInterface;
+
+/**
+ * Student entity.
+ */
 class Student
 {
     const GENDER_MALE = "male";
     const GENDER_FEMALE = "female";
+
     const STATUS_RESIDENT = "resident";
     const STATUS_NONRESIDENT = "nonresident";
 
@@ -20,6 +34,20 @@ class Student
     private $rating;
     private $token;
 
+    public static function fromPostRequest(ServerRequestInterface $request)
+    {
+        $allowedFields = ['name', 'lastName', 'gender', 'group', 'email',
+            'sgroupbyear', 'status', 'rating'];
+
+        $body = $request->getParsedBody();
+        $student = new Student();
+        foreach($allowedFields as $key) {
+            $setter = sprintf('set%s', ucfirst($key));
+            $student->$setter(isset($body[$key]) ? strval($body[$key]) : null);
+        }
+        return $student;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -30,24 +58,24 @@ class Student
         $this->id = $id;
     }
 
-    public function getName()
+    public function getFirstName()
     {
         return $this->name;
     }
 
-    public function setName($name)
+    public function setFirstName($name)
     {
         $this->name = $name;
     }
 
-    public function getSurname()
+    public function getLastName()
     {
         return $this->surname;
     }
 
-    public function setSurname($surname)
+    public function setLastName($name)
     {
-        $this->surname = $surname;
+        $this->surname = $name;
     }
 
     public function getGender()

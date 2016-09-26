@@ -1,40 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
         <link href="media/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="media/css/style.css" rel="stylesheet">
-        <script src="media/js/jquery.min.js"></script>
-        <script src="media/bootstrap/js/bootstrap.min.js"></script>
-        <title><?= $pageTitle ?></title>
+        <link href="media/styles/stylesheet.css" rel="stylesheet">
+        <title>Student list</title>
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed"
-                        data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="index.php">Список студентов</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li "<?php if($navTitle == 'index'): ?>" class="active" "<?php endif; ?>"><a href="index.php">Главная</a></li>
-                        <?php if($isAuthorized): ?>
-                            <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Редактировать</a></li>
-                            <li><a href="logout.php">Выход</a></li>
-                        <?php else: ?>
-                            <li "<?php if($navTitle == 'form'): ?>" class="active" "<?php endif; ?>"><a href="form.php">Добавить</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-    </body>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">Student List</a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/form">Registration</a></li>
+                        </ul>
+                        <p class="navbar-text navbar-right">You are not logged in</p>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>

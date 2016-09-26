@@ -1,0 +1,27 @@
+body {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#students-search-container {
+    margin-bottom: 20px;
+}
+
+#students-navigation-container {
+    text-align: center;
+}
+
+#students-form-container {
+    background-color: #f5f5f5;
+}
+
+#students-form-container > #students-heading-container > h3 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.students-page-footer {
+    background-color: #f8f8f8;
+}

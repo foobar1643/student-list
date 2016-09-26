@@ -1,101 +1,70 @@
-<?php
-    $pageTitle = "Главная страница";
-    $navTitle = "index";
-?>
-<?php include("header.phtml") ?>
-<div id="content">
+<?php require('header.phtml'); ?>
 
-    <?php if($success): ?>
-        <div class="alert alert-success" role="alert">
-            <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-            Информация успешно добавлена в базу данных.
-        </div>
-    <?php endif; ?>
-
-    <?php if($students || $tableHelper->searchPattern != null): ?>
-        <form method="get">
-            <div class="row" id="search_box">
-                <div class="col-lg-4 col-lg-offset-4">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Поиск</button>
-                        </span>
-                        <input type="text" name="search" class="form-control"
-                        placeholder="Введите запрос для поиска"
-                        value="<?= htmlspecialchars($tableHelper->searchPattern) ?>" required>
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-6 -->
-            </div>
-        </form>
-    <?php endif; ?>
-
-    <?php if($students): ?>
-        <?php if($tableHelper->searchPattern != null): ?>
-            <p class="search-info">Показаны результаты по запросу &laquo;<?= htmlspecialchars($tableHelper->searchPattern) ?>&raquo;</p>
-            <p class="search-info" id="text-all"><a href="index.php">Показать все записи</a></p>
-        <?php endif; ?>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Список студентов</div>
-            <table class="table">
-                <tr>
-                    <?php foreach($tableHelper->getTableHeaders() as $key => $name): ?>
-                        <th>
-                            <a href="<?= htmlspecialchars($tableHelper->getSortingLink($key)) ?>"><?= $name ?></a>
-                            <?php if($tableHelper->sortKey == $key): ?>
-                                <span class="glyphicon <?= $tableHelper->getSortingGlyphicon() ?>" aria-hidden="true"></span>
-                            <?php endif; ?>
-                        </th>
-                    <?php endforeach; ?>
+<?php if(!isset($students) && empty($students)): ?>
+    Student list is empty.
+<?php else: ?>
+    <div class="container-fluid">
+        <!-- Search box !-->
+        <div class="col-md-6 col-md-offset-3" id="students-search-container">
+            <form method="get">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search for..." required>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Search</button>
+                    </span>
+                </div><!-- /input-group -->
+            </form>
+        </div><!-- /.col-md-4 -->
+        <!-- Student list !-->
+        <div class="panel panel-default col-md-12 students-list-table-container">
+            <table class="table students-list-table">
+                <!-- Student list row names !-->
+                <tr class="students-list-table-header">
+                    <th><a href="<?= $linker->toSorting('id') ?>">#</a></th>
+                    <th><a href="<?= $linker->toSorting('name') ?>">First name</a></th>
+                    <th><a href="<?= $linker->toSorting('surname') ?>">Last name</a></th>
+                    <th><a href="<?= $linker->toSorting('group') ?>">Group</a></th>
+                    <th><a href="<?= $linker->toSorting('rating') ?>">Rating</a></th>
                 </tr>
-                <?php foreach($students as $student): ?>
+                <?php foreach($students as $key => $student): ?>
                     <tr>
-                        <td><?= htmlspecialchars($student->getName()) ?></td>
-                        <td><?= htmlspecialchars($student->getSurname()) ?></td>
+                        <td><?= htmlspecialchars($student->getId()) ?></td>
+                        <td><?= htmlspecialchars($student->getFirstName()) ?></td>
+                        <td><?= htmlspecialchars($student->getLastName()) ?></td>
                         <td><?= htmlspecialchars($student->getGroup()) ?></td>
                         <td><?= htmlspecialchars($student->getRating()) ?></td>
                     </tr>
                 <?php endforeach; ?>
-            </table>
+            </table><!-- /.table -->
         </div>
-
-        <?php if($pager->getPages() > 1): ?>
-            <nav id="table_nav">
-                <ul class="pagination pagination-lg">
-                    <li <?php if($currentPage <= 1): ?> class="disabled" <?php endif; ?> >
-                        <a <?php if($currentPage > 1): ?> href="<?= $tableHelper->getPageLink($currentPage - 1) ?>" aria-label="Previous" <?php endif; ?> >
-                            <span aria-hidden="true">&laquo;</span>
+    </div><!-- /.container-fluid -->
+    <?php if($pager->getPages() > 1): ?>
+        <nav aria-label="Page navigation" id="students-navigation-container">
+            <ul class="pagination pagination-lg">
+                <li <?php if($page <= 1): ?> class="disabled" <?php endif; ?> >
+                    <a <?php if($page > 1): ?> href="<?= $linker->toPage($page - 1) ?>" aria-label="Previous" <?php endif; ?> >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- Page nubmers start !-->
+                <?php $starterPage = ($page > 1) ? $page - 1 : $page; ?>
+                <?php $pagesTotal = ($page + 2) <= $pager->getPages() ? $page + 2 : $page + ($pager->getPages() - $page) ?>
+                <?php for($i = $starterPage; $i <= $pagesTotal; $i++): ?>
+                    <li "<?php if($i == $page): ?> class='active' <?php endif; ?>">
+                        <a <?php if($i !== $page): ?> href="<?= $linker->toPage($i) ?>" <?php endif; ?> >
+                            <?= $i ?>
                         </a>
                     </li>
-                    <!-- Page nubmers start !-->
-                    <?php $starterPage = ($currentPage > 1) ? $currentPage - 1 : $currentPage; ?>
-                    <?php $pagesTotal = ($currentPage + 2) <= $pager->getPages() ? $currentPage + 2 : $currentPage + ($pager->getPages() - $currentPage) ?>
-                    <?php for($i = $starterPage; $i <= $pagesTotal; $i++): ?>
-                        <li "<?php if($i == $currentPage): ?> class='active' <?php endif; ?>">
-                            <a <?php if($i !== $currentPage): ?> href="<?= $tableHelper->getPageLink($i) ?>" <?php endif; ?> >
-                                <?= $i ?>
-                            </a>
-                        </li>
-                    <?php endfor; ?>
-                    <!-- Page nubmers end !-->
-                    <li <?php if($currentPage >= $pager->getPages()): ?> class="disabled" <?php endif; ?> >
-                        <a <?php if($currentPage < $pager->getPages()): ?> href="<?= $tableHelper->getPageLink($currentPage + 1) ?>" aria-label="Next" <?php endif; ?>>
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        <?php endif; ?>
-
-    <?php else: ?>
-        <h3 class="student-list-message">
-            <?php if($tableHelper->searchPattern != null): ?>
-                По запросу &laquo;<?= htmlspecialchars($tableHelper->searchPattern) ?>&raquo; не найдено ни одного студента.
-            <?php else: ?>
-                Список студентов пуст.
-            <?php endif; ?>
-        </h3>
+                <?php endfor; ?>
+                <!-- Page nubmers end !-->
+                <li <?php if($page >= $pager->getPages()): ?> class="disabled" <?php endif; ?> >
+                    <a <?php if($page < $pager->getPages()): ?> href="<?= $linker->toPage($page + 1) ?>" aria-label="Next" <?php endif; ?>>
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     <?php endif; ?>
-</div>
-</body>
-</html>
+<?php endif; ?>
+
+<?php require('footer.phtml'); ?>
