@@ -1,6 +1,9 @@
 # Mandatory composer executable, although i use it globally
 composer.phar
 
+# Ignore database configuration file
+db.ini
+
 # Ignore broken documentation, dependencies and unfinished tests
 docs/*
 vendor/*

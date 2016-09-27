@@ -104,27 +104,6 @@ class Request extends Message implements ServerRequestInterface
         $this->attributes = new Collection([]);
     }
 
-
-    /**
-     * @todo Think about better way of doing this.
-     *
-     * @param string $params Query params.
-     *
-     * @return array
-     */
-    protected function parseQueryParams($params)
-    {
-        // Array with the results.
-        $result = [];
-        // Explode the query string by '&' symbol.
-        $keyValue = !empty($params) ? explode('&', $params) : [];
-        foreach($keyValue as $key => $value) {
-            $param = explode('=', $value);
-            $result[$param[0]] = $param[1];
-        }
-        return $result;
-    }
-
     public static function fromServer(array $server)
     {
         $headers = Headers::fromServer($server);
@@ -366,8 +345,10 @@ class Request extends Message implements ServerRequestInterface
     }
 
     /**
-     * Retrieve query parameter by its name. Returns a specified default value
+     * Retrieve query parameter by it's name. Returns a specified default value
      * if parameter with a given name does not exist.
+     *
+     * This method is not a part of PSR-7 specification.
      *
      * @param string $name Name of the parameter to retrieve.
      * @param mixed $default Value to return if parameter does not exist.
@@ -378,6 +359,25 @@ class Request extends Message implements ServerRequestInterface
     public function getQueryParam($name, $default = null)
     {
         return $this->queryParams->get($name, $default);
+    }
+
+    /**
+     * Filters a query parameter with a given name. If parameter matches the element
+     * in the $filter array, returns the element. If parameter does not exist or
+     * it's value does not match anything form $filter array, returns a default value.
+     *
+     * This method is not a part of PSR-7 specification.
+     *
+     * @param string $name Name of the parameter to filter.
+     * @param array  $filter Array with correct values for filtering.
+     * @param mixed $default A value to return if filtering failed.
+     *
+     * @return mixed Query parameter or a default value.
+     */
+    public function filterQueryParam($name, array $filter, $default = null)
+    {
+        $parameter = $this->queryParams->get($name, $default);
+        return (in_array($parameter, $filter)) ? $parameter : $default;
     }
 
     /**

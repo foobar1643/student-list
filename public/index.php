@@ -24,8 +24,8 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
 
     $students = $container['studentGateway']->searchStudents($searchQuery,
         $pager->getOffset($page), $pager->getLimit(),
-        $request->getQueryParam('key', 'id'),
-        $request->getQueryParam('type', 'asc'));
+        $request->filterQueryParam('key', ['name', 'surname', 'sgroup', 'rating'], 'id'),
+        $request->filterQueryParam('type', ['asc', 'desc'], 'asc'));
 
     return $container['view']->renderTemplate('index.phtml', $response, [
         'linker' => new LinkGenerator($request),

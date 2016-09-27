@@ -30,9 +30,11 @@ class StringUtils
     /**
      * Parses query string into a collection of parameters.
      *
-     * @param  [type] $queryString [description]
+     * @todo Think about better way of doing this
      *
-     * @return [type]              [description]
+     * @param string $queryString Query string to parse.
+     *
+     * @return \Students\Utility\Collection Collection of parsed data.
      */
     public static function parseQueryString($queryString)
     {
