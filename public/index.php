@@ -36,7 +36,37 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
 });
 
 $app->route('/form', 'GET', function(Request $request, Response $response) use($container) {
-    return $container['view']->renderTemplate('form.phtml', $response, []);
+    $auth = $container['studentAuthorization'];
+    $token = $auth->getAuthToken($request);
+    $student = !empty($token) ? $container['studentGateway']->selectStudent($token)
+        : new Student();
+
+    return $container['view']->renderTemplate('form.phtml', $response, [
+        'student' => $student,
+        'errors' => [],
+        'authorized' => $container['studentAuthorization']->isAuthorized($request)
+    ]);
+});
+
+$app->route('/form', 'POST', function(Request $request, Response $response) use($container) {
+    $auth = $container['studentAuthorization'];
+    $gateway = $container['studentGateway'];
+
+    $student = Student::fromPostRequest($request);
+    $student->setToken($auth->getToken($request));
+    $errors = $container['studentValidator']->validateStudent($student);
+
+    if(empty($errors)) {
+        ($auth->isAuthorized($request)) ? $gateway->updateStudent($student) : $gateway->addStudent($student);
+        $response = $auth->authorizeUser($student, $response);
+        return $response->withHeader('Location', '/');
+    }
+
+    return $container['view']->renderTemplate('form.phtml', $response, [
+        'student' => $student,
+        'errors' => $errors,
+        'authorized' => $auth->isAuthorized($request)
+    ]);
 });
 
 $app->start();

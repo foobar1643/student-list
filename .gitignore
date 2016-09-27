@@ -2,14 +2,14 @@
 composer.phar
 
 # Ignore database configuration file
-# db.ini
+db.ini
 
 # Ignore broken documentation, dependencies and unfinished tests
 docs/*
 vendor/*
 tests/*
 
-# Ignore bootstrap and jQuery
+# Ignore Bootstrap and jQuery
 public/media/bootstrap/*
 public/media/javascript/jquery.*
 

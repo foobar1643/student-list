@@ -14,7 +14,8 @@ namespace Students\Validation;
  * Abstract validator class. Contains basic validation rules for names, groups
  * and emails.
  *
- * @todo Should I encapsulate the methods?
+ * @todo Think about getting a way to set different regexps\other filters for
+ * different validation cases.
  */
 abstract class Validator
 {
@@ -30,9 +31,9 @@ abstract class Validator
 
     protected function validateEmail($email)
     {
-        //if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        //    return "E-mail must be in name@example.com format.";
-        //}
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "E-mail must be in name@example.com format.";
+        }
         return true;
     }
 

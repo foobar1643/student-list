@@ -37,20 +37,20 @@ class StudentValidator extends Validator
         $errors['lastName'] = $this->validateName($student->getLastName());
         $errors['gender'] = $this->validateGender($student->getGender());
         $errors['group'] = $this->validateGroup($student->getGroup());
-        $errors['email'] = $this->validateEmail($student->getEmail());
+        $errors['email'] = $this->confirmEmail($student->getEmail(), $student->getToken());
         $errors['birthYear'] = $this->validateBirthYear($student->getBirthYear());
         $errors['status'] = $this->validateStatus($student->getStatus());
         $errors['rating'] = $this->validateRating($student->getRating());
         return array_filter($errors, [$this, 'filterErrors']);
     }
 
-    protected function validateEmail($email)
+    protected function confirmEmail($email, $token)
     {
-        $validatedEmail = true;
+        $validatedEmail = $this->validateEmail($email);
         if($validatedEmail !== true) {
             return $validatedEmail;
         }
-        if($this->dataGateway->checkEmail($email, '') !== true) {
+        if($this->dataGateway->checkEmail($email, $token) !== false) {
             return 'This email is already taken by another user.';
         }
         return true;

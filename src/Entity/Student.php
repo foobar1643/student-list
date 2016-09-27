@@ -36,8 +36,8 @@ class Student
 
     public static function fromPostRequest(ServerRequestInterface $request)
     {
-        $allowedFields = ['name', 'lastName', 'gender', 'group', 'email',
-            'sgroupbyear', 'status', 'rating'];
+        $allowedFields = ['firstName', 'lastName', 'gender', 'group', 'email',
+            'birthYear', 'status', 'rating'];
 
         $body = $request->getParsedBody();
         $student = new Student();
@@ -56,6 +56,7 @@ class Student
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     public function getFirstName()
@@ -66,6 +67,7 @@ class Student
     public function setFirstName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getLastName()
@@ -76,6 +78,7 @@ class Student
     public function setLastName($name)
     {
         $this->surname = $name;
+        return $this;
     }
 
     public function getGender()
@@ -86,6 +89,7 @@ class Student
     public function setGender($gender)
     {
         $this->gender = $gender;
+        return $this;
     }
 
     public function getGroup()
@@ -96,6 +100,7 @@ class Student
     public function setGroup($group)
     {
         $this->sgroup = $group;
+        return $this;
     }
 
     public function getEmail()
@@ -106,6 +111,7 @@ class Student
     public function setEmail($email)
     {
         $this->email = $email;
+        return $this;
     }
 
     public function getBirthYear()
@@ -116,6 +122,7 @@ class Student
     public function setBirthYear($year)
     {
         $this->byear = $year;
+        return $this;
     }
 
     public function getStatus()
@@ -126,6 +133,7 @@ class Student
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
     }
 
     public function getRating()
@@ -136,6 +144,7 @@ class Student
     public function setRating($rating)
     {
         $this->rating = $rating;
+        return $this;
     }
 
     public function getToken()
@@ -146,5 +155,6 @@ class Student
     public function setToken($token)
     {
         $this->token = $token;
+        return $this;
     }
 }
