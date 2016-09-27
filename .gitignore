@@ -2,7 +2,7 @@
 composer.phar
 
 # Ignore database configuration file
-db.ini
+# db.ini
 
 # Ignore broken documentation, dependencies and unfinished tests
 docs/*
