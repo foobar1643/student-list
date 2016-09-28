@@ -35,37 +35,30 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
     ]);
 });
 
-$app->route('/form', 'GET', function(Request $request, Response $response) use($container) {
-    $auth = $container['studentAuthorization'];
-    $token = $auth->getAuthToken($request);
-    $student = !empty($token) ? $container['studentGateway']->selectStudent($token)
-        : new Student();
-
-    return $container['view']->renderTemplate('form.phtml', $response, [
-        'student' => $student,
-        'errors' => [],
-        'authorized' => $container['studentAuthorization']->isAuthorized($request)
-    ]);
-});
-
-$app->route('/form', 'POST', function(Request $request, Response $response) use($container) {
+$app->route('/form', ['GET', 'POST'], function(Request $request, Response $response) use($container) {
     $auth = $container['studentAuthorization'];
     $gateway = $container['studentGateway'];
+    $csrfProtection = $container['csrfProtection'];
 
-    $student = Student::fromPostRequest($request);
-    $student->setToken($auth->getToken($request));
-    $errors = $container['studentValidator']->validateStudent($student);
+    $response = $csrfProtection->setResposneCookie($response);
+    $student = !empty($auth->getAuthToken($request)) ?
+        $gateway->selectStudent($auth->getAuthToken($request)) : new Student();
 
-    if(empty($errors)) {
-        ($auth->isAuthorized($request)) ? $gateway->updateStudent($student) : $gateway->addStudent($student);
-        $response = $auth->authorizeUser($student, $response);
-        return $response->withHeader('Location', '/');
+    if($request->getMethod() === 'POST') {
+        $csrfProtection->validateCsrfToken($request);
+        $errors = $container['studentValidator']->validateStudent($student);
+        if(empty($errors)) {
+            ($auth->isAuthorized($request)) ? $gateway->updateStudent($student) : $gateway->addStudent($student);
+            $response = $auth->authorizeUser($student, $response);
+            return $response->withHeader('Location', '/');
+        }
     }
 
     return $container['view']->renderTemplate('form.phtml', $response, [
         'student' => $student,
-        'errors' => $errors,
-        'authorized' => $auth->isAuthorized($request)
+        'errors' => [],
+        'csrfToken' => $csrfProtection->getCsrfToken(),
+        'authorized' => $container['studentAuthorization']->isAuthorized($request)
     ]);
 });
 

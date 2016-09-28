@@ -14,6 +14,7 @@ use Pimple\Container;
 use Students\Utility\Configuration;
 use Students\Database\StudentDataGateway;
 use Students\Validation\StudentValidator;
+use Students\Helper\CSRFProtection;
 use Students\Helper\StudentAuthorization;
 use Students\Utility\View;
 
@@ -55,6 +56,10 @@ $services['studentValidator'] = function($c) {
 
 $services['studentAuthorization'] = function($c) {
     return new StudentAuthorization();
+};
+
+$services['csrfProtection'] = function($c) {
+    return new CSRFProtection();
 };
 
 $container = new Container($services);
