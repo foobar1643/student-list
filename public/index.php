@@ -46,6 +46,9 @@ $app->route('/form', ['GET', 'POST'], function(Request $request, Response $respo
 
     if($request->getMethod() === 'POST') {
         $csrfProtection->validateCsrfToken($request);
+        
+        $student = Student::fromPostRequest($request);
+        $student->setToken($auth->getToken($request));
         $errors = $container['studentValidator']->validateStudent($student);
         if(empty($errors)) {
             ($auth->isAuthorized($request)) ? $gateway->updateStudent($student) : $gateway->addStudent($student);
@@ -56,7 +59,7 @@ $app->route('/form', ['GET', 'POST'], function(Request $request, Response $respo
 
     return $container['view']->renderTemplate('form.phtml', $response, [
         'student' => $student,
-        'errors' => [],
+        'errors' => isset($errors) ? $errors : [],
         'csrfToken' => $csrfProtection->getCsrfToken(),
         'authorized' => $container['studentAuthorization']->isAuthorized($request)
     ]);
