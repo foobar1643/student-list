@@ -11,6 +11,7 @@ use Students\Entity\Student;
 use Students\Helper\Pagination;
 use Students\Helper\LinkGenerator;
 use Students\Utility\StringUtils;
+use Students\Exception\ApplicationException;
 
 $app = new Application();
 
@@ -31,7 +32,9 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
         'linker' => new LinkGenerator($request),
         'students' => $students,
         'pager' => $pager,
-        'page' => $page
+        'page' => $page,
+        'authorized' => $container['studentAuthorization']->isAuthorized($request),
+        'student' => $container['studentGateway']->selectStudent($container['studentAuthorization']->getAuthToken($request))
     ]);
 });
 
@@ -46,7 +49,7 @@ $app->route('/form', ['GET', 'POST'], function(Request $request, Response $respo
 
     if($request->getMethod() === 'POST') {
         $csrfProtection->validateCsrfToken($request);
-        
+
         $student = Student::fromPostRequest($request);
         $student->setToken($auth->getToken($request));
         $errors = $container['studentValidator']->validateStudent($student);

@@ -26,13 +26,13 @@
                     <th><a href="<?= $linker->toSorting('sgroup') ?>">Group</a></th>
                     <th><a href="<?= $linker->toSorting('rating') ?>">Rating</a></th>
                 </tr>
-                <?php foreach($students as $key => $student): ?>
+                <?php foreach($students as $key => $listStudent): ?>
                     <tr>
-                        <td><?= htmlspecialchars($student->getId()) ?></td>
-                        <td><?= htmlspecialchars($student->getFirstName()) ?></td>
-                        <td><?= htmlspecialchars($student->getLastName()) ?></td>
-                        <td><?= htmlspecialchars($student->getGroup()) ?></td>
-                        <td><?= htmlspecialchars($student->getRating()) ?></td>
+                        <td><?= htmlspecialchars($listStudent->getId()) ?></td>
+                        <td><?= htmlspecialchars($listStudent->getFirstName()) ?></td>
+                        <td><?= htmlspecialchars($listStudent->getLastName()) ?></td>
+                        <td><?= htmlspecialchars($listStudent->getGroup()) ?></td>
+                        <td><?= htmlspecialchars($listStudent->getRating()) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table><!-- /.table -->

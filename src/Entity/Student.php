@@ -81,6 +81,11 @@ class Student
         return $this;
     }
 
+    public function getFullName()
+    {
+        return "{$this->name} {$this->surname}";
+    }
+
     public function getGender()
     {
         return $this->gender;

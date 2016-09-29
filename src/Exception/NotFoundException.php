@@ -13,7 +13,7 @@ namespace Students\Exception;
 /**
  * Exception thrown if a route is not found on the server.
  */
-class NotFoundException extends \Exception
+class NotFoundException extends ApplicationException
 {
     /**
      * Constructor.
@@ -22,6 +22,10 @@ class NotFoundException extends \Exception
      */
     public function __construct($path)
     {
-        parent::__construct("Path '{$path}' is not found on this server.");
+        parent::__construct(
+            "Route for '{$path}' is not found.",
+            404,
+            "The requested document is not found on this server."
+            ." Please check the URL for typos or contact server administrator for more info.");
     }
 }

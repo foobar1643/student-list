@@ -20,6 +20,7 @@ use Students\Http\Headers;
 use Students\Interfaces\ConfigInterface;
 use Students\Router\Router;
 use Students\Exception\NotFoundException;
+use Students\Exception\ApplicationException;
 
 /**
  * Students application.
@@ -68,6 +69,8 @@ class Application
      */
     public function start()
     {
+        set_error_handler([$this, 'errorHandler']);
+        set_exception_handler([$this, 'exceptionHandler']);
         $request = Request::fromServer($_SERVER);
         $this->processRequest($request);
     }
@@ -164,8 +167,22 @@ class Application
         return new Response($headers, $body, $statusCode);
     }
 
-    protected function exceptionHandler($exception)
+    public function exceptionHandler(\Exception $exception)
     {
+        $statusCode = ($exception instanceof ApplicationException) ? $exception->getHttpStatusCode() : 503;
+        $response = new Response(new Headers([]), new Stream(fopen('php://temp', 'w+')), $statusCode);
+        ob_start();
+        require(__DIR__ . "/../templates/error.phtml"); # Include default error template
+        $body = $response->getBody();
+        $body->write(ob_get_clean());
+        $this->respond($response->withBody($body));
+    }
 
+    public function errorHandler($errno, $errstr, $errfile, $errline)
+    {
+        if (!(error_reporting() & $errno)) {
+            return;
+        }
+        throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 }

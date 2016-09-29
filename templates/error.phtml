@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+        <style>
+            body {
+                background-color: #f5f5f5;
+                font-family: Tahoma, sans-serif, arial, times;
+                margin: 0;
+                padding: 0;
+            }
+
+            .error-message-container {
+                margin: 35px;
+            }
+
+            .error-message-container > h2 {
+                margin-top: 0px;
+                border-bottom: 1px solid #CECECE;
+                padding: 5px 0 6px 2px;
+            }
+
+            .error-copyright-container {
+                font-size: 9pt;
+                color: #A5A5A5;
+            }
+
+            .error-copyright-container > .error-copyright-text,
+            .error-developer-container > .error-developer-text {
+                display: block;
+            }
+
+            .error-copyright-container > .error-copyright-text > a {
+                color: #8C8C8C;
+                text-decoration: none;
+                font-style: italic;
+            }
+
+            .error-copyright-container > .error-copyright-text > a:hover {
+                text-decoration: underline;
+            }
+
+            .error-developer-info {
+                color: #5E5E5E;
+                font-family: Monaco, monospace;
+            }
+        </style>
+        <title><?= $response->getStatusCode() ?> <?= $response->getReasonPhrase() ?></title>
+    </head>
+    <body>
+        <div class="error-message-container">
+            <h2>
+                <?= $response->getStatusCode() ?> <?= $response->getReasonPhrase() ?>
+            </h2>
+            <p>
+                <?php if(method_exists($exception, 'getCustomDescription')): ?>
+                    <?= $exception->getCustomDescription() ?>
+                <?php else: ?>
+                    An error occured. Please try again or contact server administrator.
+                <?php endif; ?>
+            </p>
+            
+            <?php if(ini_get('display_errors') == 1): ?>
+            <p class="error-developer-container">
+                <span class="error-developer-text">Exception type: <span class="error-developer-info"><?= get_class($exception) ?></span></span>
+                <span class="error-developer-text">Thrown at: <span class="error-developer-info"><?= $exception->getFile() ?></span></span>
+                <span class="error-developer-text">With message: <span class="error-developer-info"><?= $exception->getMessage() ?></span></span>
+            </p>
+            <p class="error-developer-container" id="error-stack-trace-container">
+                <span class="error-developer-info"><?= nl2br($exception->getTraceAsString()) ?></span>
+            </p>
+            <?php endif; ?>
+
+            <p class="error-copyright-container">
+                <span class="error-copyright-text">&copy; 2016 foobar1643</span>
+                <span class="error-copyright-text">
+                    <a href="https://github.com/foobar1643/student-list/blob/master/LICENSE.md">Licensed under MIT license</a>
+                </span>
+                <span class="error-copyright-text">
+                    <a href="https://github.com/foobar1643/student-list">Source code on GitHub</a>
+                </span>
+            </p>
+        </div>
+    </body>
+</html>

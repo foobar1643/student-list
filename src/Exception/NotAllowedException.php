@@ -13,7 +13,7 @@ namespace Students\Exception;
 /**
  * Exception thrown if a request method is not allowed at the location.
  */
-class NotAllowedException extends \Exception
+class NotAllowedException extends ApplicationException
 {
     /**
      * Constructor.
@@ -22,6 +22,10 @@ class NotAllowedException extends \Exception
      */
     public function __construct($method)
     {
-        parent::__construct("Request method '{$method}' is not allowed at this location.");
+        parent::__construct(
+            "Method '{$request->getMethod()}' is not allowed at the '{$request->getRequestTarget()}' location.",
+            405,
+            "A request method is not supported for the requested resource."
+            ." Try again or contact server administrator for more info.");
     }
 }

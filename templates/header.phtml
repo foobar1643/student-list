@@ -27,9 +27,21 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li><a href="/form">Registration</a></li>
+                            <li><a href="/form">
+                                <?php if($authorized === true): ?>
+                                    Edit information
+                                <?php else: ?>
+                                    Registration
+                                <?php endif; ?>
+                            </a></li>
                         </ul>
-                        <p class="navbar-text navbar-right">You are not logged in</p>
+                        <p class="navbar-text navbar-right">
+                            <?php if($authorized === true): ?>
+                                Logged in as <?= htmlspecialchars($student->getFullName()) ?>
+                            <?php else: ?>
+                                You are not logged in
+                            <?php endif; ?>
+                        </p>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
             </nav>

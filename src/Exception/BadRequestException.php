@@ -13,9 +13,10 @@ namespace Students\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Exception thrown if a request method is not allowed at the location.
+ * Exception thrown if the server cannot or will not process the request due to
+ * an apparent client error.
  */
-class BadRequestException extends \Exception
+class BadRequestException extends ApplicationException
 {
     /**
      * Constructor.
@@ -24,7 +25,10 @@ class BadRequestException extends \Exception
      */
     public function __construct(ServerRequestInterface $request)
     {
-        parent::__construct("Request with method {$request->getMethod()} to the location"
-            ."{$request->getRequestTarget()} has failed.");
+        parent::__construct(
+            "Bad request with '{$request->getMethod()}' method, at '{$request->getRequestTarget()}' location.",
+            400,
+            "It seems that your request is malformed in some way."
+            ." Try again or contact server administrator for more info.");
     }
 }
