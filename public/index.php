@@ -34,7 +34,8 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
         'pager' => $pager,
         'page' => $page,
         'authorized' => $container['studentAuthorization']->isAuthorized($request),
-        'student' => $container['studentGateway']->selectStudent($container['studentAuthorization']->getAuthToken($request))
+        'student' => $container['studentGateway']->selectStudent($container['studentAuthorization']->getAuthToken($request)),
+        'notification' => $request->filterQueryParam('notification', ['added', 'edited'])
     ]);
 });
 
@@ -56,10 +57,10 @@ $app->route('/form', ['GET', 'POST'], function(Request $request, Response $respo
         if(empty($errors)) {
             ($auth->isAuthorized($request)) ? $gateway->updateStudent($student) : $gateway->addStudent($student);
             $response = $auth->authorizeUser($student, $response);
-            return $response->withHeader('Location', '/');
+            return $response->withHeader('Location', '/' . "?notification=" . ($auth->isAuthorized($request) ? 'edited' : 'added'));
         }
     }
-
+# . $auth->isAuthorized($request) ? 'edited' : 'added'
     return $container['view']->renderTemplate('form.phtml', $response, [
         'student' => $student,
         'errors' => isset($errors) ? $errors : [],

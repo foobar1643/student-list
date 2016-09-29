@@ -4,6 +4,12 @@
     Student list is empty.
 <?php else: ?>
     <div class="container-fluid">
+        <?php if(isset($notification)): ?>
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Your information was successfully <?= $notification ?>.
+            </div
+        <?php endif; ?>
         <!-- Search box !-->
         <div class="col-md-6 col-md-offset-3" id="students-search-container">
             <form method="get">
