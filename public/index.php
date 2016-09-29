@@ -25,8 +25,8 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
 
     $students = $container['studentGateway']->searchStudents($searchQuery,
         $pager->getOffset($page), $pager->getLimit(),
-        $request->filterQueryParam('key', ['name', 'surname', 'sgroup', 'rating'], 'id'),
-        $request->filterQueryParam('type', ['asc', 'desc'], 'asc'));
+        $request->filterQueryParam('key', ['name', 'surname', 'sgroup', 'rating'], 'rating'),
+        $request->filterQueryParam('type', ['asc', 'desc'], 'desc'));
 
     return $container['view']->renderTemplate('index.phtml', $response, [
         'linker' => new LinkGenerator($request),
@@ -35,7 +35,8 @@ $app->route('/', 'GET', function(Request $request, Response $response) use($cont
         'page' => $page,
         'authorized' => $container['studentAuthorization']->isAuthorized($request),
         'student' => $container['studentGateway']->selectStudent($container['studentAuthorization']->getAuthToken($request)),
-        'notification' => $request->filterQueryParam('notification', ['added', 'edited'])
+        'notification' => $request->filterQueryParam('notification', ['added', 'edited']),
+        'searchQuery' => $searchQuery
     ]);
 });
 

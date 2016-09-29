@@ -167,6 +167,9 @@ class Application
         return new Response($headers, $body, $statusCode);
     }
 
+    /**
+     * @todo: Clear existing body before printing an exception body.
+     */
     public function exceptionHandler(\Exception $exception)
     {
         $statusCode = ($exception instanceof ApplicationException) ? $exception->getHttpStatusCode() : 503;

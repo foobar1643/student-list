@@ -1,26 +1,48 @@
 <?php require('header.phtml'); ?>
 
-<?php if(!isset($students) && empty($students)): ?>
-    Student list is empty.
+<?php if(empty($students) && empty($searchQuery)): ?>
+    <div class="alert alert-info" role="alert">
+        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        Student list is currently empty. You can start by adding your info to the list
+        <a href="/form" class="alert-link"> on the registration page.</a>
+    </div>
 <?php else: ?>
     <div class="container-fluid">
         <?php if(isset($notification)): ?>
             <div class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Your information was successfully <?= $notification ?>.
-            </div
-        <?php endif; ?>
+            </div>
+        <?php endif; ?><!--No students found by &laquo;<i>QUERY</i>&raquo; search query. !-->
         <!-- Search box !-->
-        <div class="col-md-6 col-md-offset-3" id="students-search-container">
-            <form method="get">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search for..." required>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Search</button>
-                    </span>
-                </div><!-- /input-group -->
-            </form>
-        </div><!-- /.col-md-4 -->
+        <div class="container-fluid">
+            <div class="col-md-12" id="students-search-container">
+                <form method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control"
+                        value="<?= $searchQuery ?>" placeholder="Search for..." required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Search</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </form>
+            </div><!-- /.col-md-4 -->
+        </div>
+        <?php if(!empty($searchQuery)): ?>
+            <!-- Search notifications !-->
+            <div class="alert alert-<?php if(empty($students)): ?>warning<?php else: ?>info<?php endif; ?>"
+                role="alert">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                <?php if(empty($students)): ?>
+                    No students found by &laquo;<i><?= htmlspecialchars($searchQuery) ?></i>&raquo; search query.
+                    Check your search query for typos or <a href="/" class="alert-link">return to the main page.</a>
+                <?php else: ?>
+                    Currently displaying students that were found by &laquo;<i><?= htmlspecialchars($searchQuery) ?></i>&raquo;
+                    search query. <a href="/" class="alert-link">Return to the main page</a> to view the whole list.
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Student list !-->
         <div class="panel panel-default col-md-12 students-list-table-container">
             <table class="table students-list-table">
