@@ -17,37 +17,67 @@ use Students\Interfaces\Router\RouteCollectionInterface;
 
 /**
  * A collection to store routes.
+ *
+ * @todo Think about using SplObjectStorage here.
  */
 class RouteCollection extends Collection implements RouteCollectionInterface
 {
+    /**
+     * Constructor.
+     *
+     * @todo Validate every element in the $routes array so nothing unwanted gets through.
+     *
+     * @param array $routes Routes to store in the collection.
+     */
+    public function __construct(array $routes)
+    {
+        parent::__construct($routes);
+    }
+
+    /**
+     * This method does nothing in order to retain proper encapsulation.
+     * Use addRoute() for route addition.
+     */
+    public function set($key, $value = null)
+    {
+        // Do nothing
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addRoute(Route $route)
     {
+        if(parent::has($this->getStorageName($route))) {
+            throw new \InvalidArgumentException("Route to '{$route->getPath()}'"
+                ." with method(s) {$route->getMethodsAsString()} already exists.");
+        }
         parent::set($this->getStorageName($route), $route);
     }
 
-    public function getRouteForTarget($target, $method)
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoutesForTarget($target)
     {
-        foreach($this->data as $name => $route) {
-            if($route->matchPlaceholders($target) && $route->hasMethod($method)) {
-                return $route;
+        $routes = [];
+        foreach($this->data as $hash => $route) {
+            if($route->matchPlaceholders($target)) {
+                array_push($routes, $route);
             }
         }
-        return null;
+        return $routes;
     }
 
-    public function hasRoute(Route $route)
-    {
-        $originalRoute = parent::get($this->getStorageName($route));
-        if(!is_null($originalRoute)) {
-            if($originalRoute->getMethods() === $route->getMethods()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Returns a md5 hash of route path and route methods.
+     *
+     * @param Route $route Route for which storage name will be generated.
+     *
+     * @return string md5 hash of route path and route methods.
+     */
     protected function getStorageName(Route $route)
     {
-        return md5($route->getPath() . implode($route->getMethods(), ','));
+        return md5($route->getPath() . $route->getMethodsAsString());
     }
 }

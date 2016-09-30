@@ -15,9 +15,22 @@ use Students\Entity\Route;
 
 interface RouteCollectionInterface extends CollectionInterface
 {
+
+    /**
+     * Adds a route to the collection.
+     *
+     * @param Route $route Route to add.
+     */
     public function addRoute(Route $route);
 
-    public function getRouteForTarget($target, $method);
-
-    public function hasRoute(Route $route);
+    /**
+     * Retrieves an array of routes for given target. If no routes was found
+     * for given target, returns an empty array.
+     *
+     * @param string $target Target for matching the route.
+     *
+     * @return array Array of routes for given target. Empty array if no routes
+     * was found for given target.
+     */
+    public function getRoutesForTarget($target);
 }

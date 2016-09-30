@@ -27,7 +27,6 @@ use Students\Exception\ApplicationException;
  */
 class Application
 {
-
     /**
      * Response chunk size in bytes.
      *
@@ -91,17 +90,17 @@ class Application
 
     protected function processRequest(Request $request)
     {
-        $path = $request->getRequestTarget();
         $response = $this->createResponse();
         // Route current request
-        $closure = $this->router->routeRequest($request);
-        $response = $closure($request, $response);
-        // Check if handle has retutned a response object
+        $callable = $this->router->routeRequest($request);
+        $response = call_user_func($callable, $request, $response);
+        // Check if callable has retutned a response object
         if(!($response instanceof ResponseInterface)) {
-            // If no response was returned - throw a RuntimeException
-            throw new \RuntimeException('Mapped closure should return a Response object.');
+            // If callable mapped to a route returned something other than response, throw
+            // RuntimeException.
+            throw new \RuntimeException('Callable mapped to the route should always return an instance'
+                .' of PSR-7 ResponseInterface.');
         }
-        // If a handle has returned response object - call respond() method
         $this->respond($response);
     }
 
@@ -170,7 +169,7 @@ class Application
     /**
      * @todo: Clear existing body before printing an exception body.
      */
-    public function exceptionHandler(\Exception $exception)
+    public function exceptionHandler($exception)
     {
         $statusCode = ($exception instanceof ApplicationException) ? $exception->getHttpStatusCode() : 503;
         $response = new Response(new Headers([]), new Stream(fopen('php://temp', 'w+')), $statusCode);

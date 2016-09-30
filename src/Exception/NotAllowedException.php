@@ -10,6 +10,8 @@
 
 namespace Students\Exception;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Exception thrown if a request method is not allowed at the location.
  */
@@ -20,12 +22,12 @@ class NotAllowedException extends ApplicationException
      *
      * @param string $method Method that were not allowed.
      */
-    public function __construct($method)
+    public function __construct(ServerRequestInterface $request)
     {
         parent::__construct(
             "Method '{$request->getMethod()}' is not allowed at the '{$request->getRequestTarget()}' location.",
             405,
-            "A request method is not supported for the requested resource."
+            "A request method is not supported for the requested page."
             ." Try again or contact server administrator for more info.");
     }
 }

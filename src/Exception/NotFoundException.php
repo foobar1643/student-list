@@ -10,6 +10,8 @@
 
 namespace Students\Exception;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Exception thrown if a route is not found on the server.
  */
@@ -20,12 +22,12 @@ class NotFoundException extends ApplicationException
      *
      * @param string $path Path that were not found.
      */
-    public function __construct($path)
+    public function __construct(ServerRequestInterface $request)
     {
         parent::__construct(
-            "Route for '{$path}' is not found.",
+            "Route for '{$request->getRequestTarget()}' is not found.",
             404,
-            "The requested document is not found on this server."
+            "The requested page is not found on this server."
             ." Please check the URL for typos or contact server administrator for more info.");
     }
 }

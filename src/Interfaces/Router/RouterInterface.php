@@ -10,6 +10,8 @@
 
 namespace Students\Interfaces\Router;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * @todo Think about request method validation, is this a router's task?
  */
@@ -25,85 +27,51 @@ interface RouterInterface
      *
      * @return void
      */
-    //public function loadFromFile($file);
+    #public function loadFromFile($file);
 
     /**
      * Loads routes from PHP array.
      *
      * @return void
      */
-    //public function loadFromArray(array $routes);
+    #public function loadFromArray(array $routes);
 
     /**
      * Creates a route for given path and method.
      *
-     * @param string $path Route path.
-     * @param string $method Route method.
-     * @param callable $closure A closure to call when processing a route.
+     * @param string $path Route destination.
+     * @param string|array $methods Route request method(s).
+     * @param callable $closure A callable to call when processing a route.
      *
-     * @throws \InvalidArgumentException If a route with given path and method already exists.
-     *
-     * @return void
+     * @throws \InvalidArgumentException If a route with given path and method(s) is
+     * already in the collection.
      */
     public function map($path, $method, callable $closure);
 
     /**
-     * Checks if a route with a given path exists.
+     * Routes given request. On success returns a callable for a route.
+     * Throws NotFoundException or NotAllowedException on failure.
      *
-     * @param  string  $path Route's path to check.
+     * @todo Maybe this should return a Route entity, rather than just callable?
      *
-     * @return boolean True if a route with a given path exists, false otherwise.
+     * @param ServerRequestInterface $request Request to route.
+     *
+     * @throws \Students\Exception\NotFoundException If a route for request target is not found.
+     * @throws \Students\Exception\NotAllowedException If request method is not allowed for current route.
+     *
+     * @return callable Callable that is mapped to the found route.
      */
-    //public function hasRoute($path);
+    public function routeRequest(ServerRequestInterface $request);
 
     /**
-     * Checks if given request method is valid for a given route's path.
+     * Returns given Request instance with modified attributes, in which
+     * attribute key being route placeholder name, and attribute value being
+     * route placeholder value respectively. This method does not modify request
+     * attributes if no placeholders was found in the path.
      *
-     * Throws InvalidArgumentException if a route with given path does not exists.
+     * @param ServerRequestInterface $request Request instance to get placeholders from.
      *
-     * @param string $method Request method to check.
-     * @param string $path Route's path.
-     *
-     * @throws \InvalidArgumentException if a route with given path does not exists.
-     *
-     * @return boolean True if request method is valid, false otherwise.
+     * @return ServerRequestInterface Request instance with filled attributes.
      */
-    //public function requestMethodValid($method, $path);
-
-    /**
-     * Gets request method for a route with given path.
-     *
-     * Throws InvalidArgumentException if a route with given path does not exists.
-     *
-     * @param string $path Route's path.
-     *
-     * @throws \InvalidArgumentException if a route with given path does not exists.
-     *
-     * @return string Request method for a route with given path.
-     */
-    //public function getMethod($path);
-
-    /**
-     * Gets closure for a route with given path.
-     *
-     * Throws InvalidArgumentException if a route with given path does not exists.
-     *
-     * @param string $path Route's path.
-     *
-     * @throws \InvalidArgumentException if a route with given path does not exists.
-     *
-     * @return callable Closure for a route with given path.
-     */
-    //public function getClosure($path);
-
-    /**
-     * Should return an associative array, it which key being placeholder name, and value
-     * being placeholder value respectively. Should return an empty array if no placeholders
-     * was found in given path.
-     *
-     * @param string $path Path in which to look for placeholders
-     *
-     * @return array Associative array with placeholders name and values.
-     */
-    //public function getPlaceholders($path);
+    public function getRequestPlaceholders(ServerRequestInterface $request);
 }

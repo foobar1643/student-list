@@ -113,7 +113,6 @@ class Collection implements CollectionInterface
      *
      * Implementation of a Countable interface.
      *
-     *
      * @return int
      */
     public function count()
