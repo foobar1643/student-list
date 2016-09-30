@@ -14,6 +14,10 @@ use Students\Entity\Student;
 
 /**
  * Validates a student entity.
+ *
+ * This class is not complete, in fact, it's a temporary solution.
+ * What I want to make in the future is described in the Validator.php class doc.
+ *
  */
 class StudentValidator extends Validator
 {

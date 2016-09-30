@@ -61,7 +61,7 @@ $app->route('/form', ['GET', 'POST'], function(Request $request, Response $respo
             return $response->withHeader('Location', '/' . "?notification=" . ($auth->isAuthorized($request) ? 'edited' : 'added'));
         }
     }
-# . $auth->isAuthorized($request) ? 'edited' : 'added'
+
     return $container['view']->renderTemplate('form.phtml', $response, [
         'student' => $student,
         'errors' => isset($errors) ? $errors : [],
