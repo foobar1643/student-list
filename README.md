@@ -28,7 +28,7 @@ Simple CRUD application, designed using MVC architectural pattern and written us
 This application is licensed under the MIT license. For more information see [License file].
 
 [License file]: <https://github.com/foobar1643/student-list/blob/master/LICENSE.md>
-[as described here]: <https://github.com/foobar1643/student-list/blob/develompent/ROUTING.md>
+[as described here]: <https://github.com/foobar1643/student-list/blob/development/ROUTING.md>
 [PHPUnit testing framework]: <https://phpunit.de/>
 [Dflydev]: <https://github.com/dflydev>
 [FIGCookies]: <https://github.com/dflydev/dflydev-fig-cookies>

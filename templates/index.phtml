@@ -13,7 +13,7 @@
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 Your information was successfully <?= $notification ?>.
             </div>
-        <?php endif; ?><!--No students found by &laquo;<i>QUERY</i>&raquo; search query. !-->
+        <?php endif; ?>
         <!-- Search box !-->
         <div class="container-fluid">
             <div class="col-md-12" id="students-search-container">
@@ -26,8 +26,9 @@
                         </span>
                     </div><!-- /input-group -->
                 </form>
-            </div><!-- /.col-md-4 -->
+            </div><!-- /.col-md-12 -->
         </div>
+
         <?php if(!empty($searchQuery)): ?>
             <!-- Search notifications !-->
             <div class="alert alert-<?php if(empty($students)): ?>warning<?php else: ?>info<?php endif; ?>"
@@ -54,6 +55,7 @@
                     <th><a href="<?= $linker->toSorting('sgroup') ?>">Group</a></th>
                     <th><a href="<?= $linker->toSorting('rating') ?>">Rating</a></th>
                 </tr>
+                <!-- Student list row values !-->
                 <?php foreach($students as $key => $listStudent): ?>
                     <tr>
                         <td><?= htmlspecialchars($listStudent->getId()) ?></td>
