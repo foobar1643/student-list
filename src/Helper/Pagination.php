@@ -12,6 +12,8 @@ namespace Students\Helper;
 
 /**
  * Helps the view create pagination.
+ *
+ * @todo Advanced pagination (like displaying only previous and two next pages).
  */
 class Pagination
 {

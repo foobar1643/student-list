@@ -33,9 +33,12 @@ class Headers extends Collection implements HeadersCollectionInterface
     }
 
     /**
-     * Creates headers collection from array.
+     * Creates new headers collection from server parameters.
      *
-     * @param array $server [description]
+     * @todo Think about better way to retrieve HTTP request headers.
+     *
+     * @param array $server Array with server parameters.
+     * This usually comes from $_SERVER superglobal.
      *
      * @return static
      */

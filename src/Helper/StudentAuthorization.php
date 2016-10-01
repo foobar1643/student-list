@@ -61,6 +61,8 @@ class StudentAuthorization
      * be changed into something more flexible. But in that case, the code using
      * the funcgion will be longer. Should I do it?
      *
+     * @todo Seed random number generator with some data from student (id?)
+     *
      * @param ServerRequestInterface $request Request instance to check for auth cookie.
      *
      * @return string Authorization token.
@@ -106,7 +108,7 @@ class StudentAuthorization
      * entity.
      *
      * This method throws an InvalidArgumentException if given student entity does
-     * not have an authorization token. You can use setAuthToken() method to generate
+     * not have an authorization token. You can use createAuthToken() method to generate
      * an auth token for a student entity.
      *
      * @param Student $student Student to authorize
@@ -135,7 +137,7 @@ class StudentAuthorization
      * Removes authorization cookie, deauthorizing the user.
      *
      * @param ResponseInterface $response Response instance.
-     * Used to unset the authorization cookei.
+     * Used to unset the authorization cookie.
      *
      * @return \Psr\Http\Message\ResponseInterface Response instance with
      * authorization cookie removed.

@@ -17,13 +17,16 @@ use Students\Entity\Student;
  */
 class StudentDataGateway
 {
-    /** @var PDO $pdo PDO object. */
-    private $pdo;
+    /**
+     * PDO instance.
+     * @var \PDO
+     */
+    protected $pdo;
 
     /**
      * Constructor.
      *
-     * @param PDO $pdo PDO object.
+     * @param \PDO $pdo PDO instance.
      */
     public function __construct(\PDO $pdo)
     {
@@ -31,11 +34,11 @@ class StudentDataGateway
     }
 
     /**
-     * Adds a student to the database and returns the ID of the added student.
+     * Adds a given student entity to the database and returns the ID of the added student.
      *
-     * @param Student $student A File entity to be added.
+     * @param Student $student Student entity to add.
      *
-     * @return int
+     * @return int ID of the added student.
      */
     public function addStudent(Student $student)
     {
@@ -55,11 +58,9 @@ class StudentDataGateway
     }
 
     /**
-     * Updates student in the database.
+     * Updates given Student entity in the database.
      *
-     * @param Student $student A File entity to update.
-     *
-     * @return void
+     * @param Student $student Student entity to update.
      */
     public function updateStudent(Student $student)
     {
@@ -83,7 +84,7 @@ class StudentDataGateway
      *
      * @param string $searchPattern Search pattern to use.
      *
-     * @return int
+     * @return int Number of total students in the database.
      */
     public function getTotalStudents($searchPattern = null)
     {
@@ -94,7 +95,8 @@ class StudentDataGateway
     }
 
     /**
-     * Searches students in the database.
+     * Selects students from the database, using given search pattern, offset, limit,
+     * sorting pattern and type.
      *
      * @param string $searchPattern Search pattern to use.
      * @param int $offset Offset in the database.
@@ -102,7 +104,7 @@ class StudentDataGateway
      * @param string $sortingPattern Sorting pattern.
      * @param string $sortingType Sorting type.
      *
-     * @return array
+     * @return array Array of selected students.
      */
     public function searchStudents($searchPattern, $offset, $limit, $sortingPattern, $sortingType)
     {
@@ -116,11 +118,11 @@ class StudentDataGateway
     }
 
     /**
-     * Selects a single student from the database.
+     * Selects a single student from the database by token.
      *
      * @param string $token Student auth token.
      *
-     * @return Student
+     * @return \Students\Entity\Student Student with the given token.
      */
     public function selectStudent($token)
     {
@@ -133,12 +135,12 @@ class StudentDataGateway
     }
 
     /**
-     * Checks if given email exists in the database.
+     * Checks if a pair of email and token exist in the single row.
      *
      * @param string $email An email to check.
      * @param string $token Student auth token.
      *
-     * @return int
+     * @return boolean True if given email and token exist in the same row, false otherwise.
      */
     public function checkEmail($email, $token)
     {

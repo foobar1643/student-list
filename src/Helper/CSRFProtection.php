@@ -17,20 +17,40 @@ use Dflydev\FigCookies\SetCookie;
 use Students\Utility\StringUtils;
 use Students\Exception\BadRequestException;
 
+/**
+ * Provides basic protection against CSRF exploit.
+ */
 class CSRFProtection
 {
+    /**
+     * CSRF token.
+     * @var string
+     */
     protected $csrfToken;
 
+    /**
+     * Constructor. Randomly generates new CSRF token every time this method is called.
+     */
     public function __construct()
     {
         $this->csrfToken = StringUtils::generate(50);
     }
 
+    /**
+     * Retrieves a CSRF token value.
+     *
+     * @return string CSRF token.
+     */
     public function getCsrfToken()
     {
         return $this->csrfToken;
     }
 
+    /**
+     * Adds a CSRF cookie to given PSR-7 Response instance.
+     *
+     * @param ResponseInterface $response Response instance with CSRF cookie.
+     */
     public function setResposneCookie(ResponseInterface $response)
     {
         $dateTime = new \DateTime("now");
@@ -41,6 +61,15 @@ class CSRFProtection
                     ->withPath('/'));
     }
 
+    /**
+     * Validates CSRF token in given PSR-7 Request instance.
+     *
+     * @param ServerRequestInterface $request PSR-7 Request instance.
+     *
+     * @throws \Students\Exception\BadRequestException If CSRF check failed.
+     *
+     * @return boolean True if CSRF check was successful.
+     */
     public function validateCsrfToken(ServerRequestInterface $request)
     {
         $formToken = isset($request->getParsedBody()['csrf']) ? strval($request->getParsedBody()['csrf']) : '';

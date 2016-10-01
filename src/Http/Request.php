@@ -85,6 +85,16 @@ class Request extends Message implements ServerRequestInterface
      */
     protected $attributes;
 
+    /**
+     * Constructor.
+     *
+     * @param HeadersCollectionInterface $headers HTTP Request headers.
+     * @param StreamInterface $body Request body.
+     * @param string $method Request method.
+     * @param UriInterface $uri Request URI.
+     * @param array $serverParams Server parameters.
+     * @param array $cookies Cookies.
+     */
     public function __construct(
         HeadersCollectionInterface $headers,
         StreamInterface $body,
@@ -104,6 +114,14 @@ class Request extends Message implements ServerRequestInterface
         $this->attributes = new Collection([]);
     }
 
+    /**
+     * Creates new Request instance from server parameters.
+     *
+     * @param array $server Array with server parameters.
+     * This usually comes from $_SERVER superglobal.
+     *
+     * @return Request Request created from server parameters.
+     */
     public static function fromServer(array $server)
     {
         $headers = Headers::fromServer($server);
@@ -115,6 +133,7 @@ class Request extends Message implements ServerRequestInterface
         $request = new Request($headers, $body, $method, $uri, $server, $cookies);
 
         if($method === 'POST') {
+            // Think about better way of doing this
             $request = $request->withParsedBody($_POST);
         }
 

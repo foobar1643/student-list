@@ -52,6 +52,7 @@ class View
         extract($vars, EXTR_PREFIX_SAME, "wddx");
         require("{$this->templatesDir}/{$templateName}");
         $body->write(ob_get_clean());
+        ob_end_clean();
         return $response->withBody($body);
     }
 }

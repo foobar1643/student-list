@@ -84,6 +84,14 @@ class Response extends Message implements ResponseInterface
         505 => 'HTTP Version Not Supported'
     ];
 
+    /**
+     * Constructor.
+     *
+     * @param HeadersCollectionInterface $headers Response headers.
+     * @param StreamInterface $body Response body.
+     * @param int $statusCode Response status code.
+     * @param string $reasonPhrase Response reason phrase.
+     */
     public function __construct(
         HeadersCollectionInterface $headers,
         StreamInterface $body,
@@ -155,6 +163,15 @@ class Response extends Message implements ResponseInterface
         return $this->reasonPhrase;
     }
 
+    /**
+     * Filters status code, returns the code if it is correct.
+     *
+     * @param int $code Status code to filter.
+     *
+     * @throws InvalidArgumentException If status code is invalid.
+     *
+     * @return int Filtered status code.
+     */
     protected function filterStatusCode($code)
     {
         if(!is_int($code) || !array_key_exists($code, $this->phrases)) {
@@ -163,6 +180,15 @@ class Response extends Message implements ResponseInterface
         return $code;
     }
 
+    /**
+     * Filters reason phrase, returns the reason phrase if it is correct.
+     * Otherwise, returns a default reason phrase for given status code.
+     *
+     * @param int $statusCode HTTP response status code.
+     * @param string $phrase Reason phrase to filter.
+     *
+     * @return string Filtered reason phrase.
+     */
     protected function filterReasonPhrase($statusCode, $phrase)
     {
         return (empty($phrase)) ? $this->phrases[$statusCode] : $phrase;

@@ -109,27 +109,13 @@ class Uri implements UriInterface
     }
 
     /**
-     * Creates URI object from $_SERVER superglobal variable.
+     * Creates new Uri instance from server parameters.
      *
+     * @param array $server Array with server parameters.
+     * This usually comes from $_SERVER superglobal.
      *
-     *
-     * @return static
+     * @return static Uri instance created from server parameters.
      */
-    public static function fromString($uri)
-    {
-        if($parsed = parse_url($uri) === false) {
-            throw new \InvalidArgumentException('Failed to parse the URI.');
-        }
-        $this->host = isset($parsed['scheme']) ? $this->filterScheme($parsed['scheme']) : '';
-        $this->host = isset($parsed['host']) ? $this->filterHost($parsed['host']) : '';
-        $this->host = isset($parsed['port']) ? $this->filterPort($parsed['port']) : '';
-        $this->host = isset($parsed['path']) ? $this->filterPath($parsed['path']) : '';
-        $this->host = isset($parsed['query']) ? $this->filterQuery($parsed['query']) : '';
-        $this->host = isset($parsed['fragment']) ? $this->filterQuery($parsed['fragment']) : '';
-        $this->host = isset($parsed['user']) ? $parsed['user'] : '';
-        $this->host = isset($parsed['pass']) ? $parsed['pass'] : '';
-    }
-
     public static function fromServer(array $server)
     {
         $scheme = empty($server['HTTPS']) ? 'http' : 'https';

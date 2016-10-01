@@ -35,13 +35,6 @@ class Application
     const RESPONSE_CHUNK_SIZE = 2048;
 
     /**
-     * Application configuration object.
-     *
-     * @var \Students\Interfaces\ConfigInterface
-     */
-    protected $config;
-
-    /**
      * Application router object.
      *
      * @var \Students\Router\Router
@@ -50,21 +43,14 @@ class Application
 
     /**
      * Constructor.
-     *
-     * @param ConfigInterface $config Application configuration object.
      */
     public function __construct()
     {
-        //$this->config = $config;
         $this->router = new Router();
     }
 
     /**
      * Starts an application.
-     *
-     * @todo Think about better way to retrieve HTTP request headers.
-     *
-     * @return void
      */
     public function start()
     {
@@ -80,33 +66,42 @@ class Application
      * @param string $path Route path.
      * @param string $method Route method.
      * @param callable $handle Callable that will process the route.
-     *
-     * @return void
      */
     public function route($path, $method, callable $handle)
     {
         $this->router->map($path, $method, $handle);
     }
 
+    /**
+     * Processes given PSR-7 Request instance.
+     *
+     * @param Request $request PSR-7 Reuqest instance to process.
+     */
     protected function processRequest(Request $request)
     {
+        // Create a Response that is going to be used for responding client.
         $response = $this->createResponse();
         // Route current request
         $callable = $this->router->routeRequest($request);
+        // Call the callable mapped to the route
         $response = call_user_func($callable, $request, $response);
-        // Check if callable has retutned a response object
+        // Check if callable returned a PSR-7 Response object
         if(!($response instanceof ResponseInterface)) {
-            // If callable mapped to a route returned something other than response, throw
-            // RuntimeException.
+            // If callable mapped to a route returned something other than
+            // PSR-7 Resposnse object, throw RuntimeException.
             throw new \RuntimeException('Callable mapped to the route should always return an instance'
                 .' of PSR-7 ResponseInterface.');
         }
+        // Respond to the client using
         $this->respond($response);
     }
 
-
     /**
+     * Responds to the client using given PSR-7 Response instance.
+     *
      * @todo Separate function for printing response body.
+     *
+     * @param Response $response PSR-7 Response instance.
      */
     protected function respond(Response $response)
     {
@@ -158,6 +153,11 @@ class Application
 
     }
 
+    /**
+     * Creates an empty PSR-7 Response instance.
+     *
+     * @return \Psr\Http\Message\ResponseInterface Empty PSR-7 Response instance.
+     */
     protected function createResponse()
     {
         $headers = new Headers([]);
@@ -167,7 +167,11 @@ class Application
     }
 
     /**
+     * Handles exceptions that were thrown in the application.
+     *
      * @todo: Clear existing body before printing an exception body.
+     *
+     * @param mixed $exception Exception to handle.
      */
     public function exceptionHandler($exception)
     {
@@ -177,9 +181,14 @@ class Application
         require(__DIR__ . "/../templates/error.phtml"); # Include default error template
         $body = $response->getBody();
         $body->write(ob_get_clean());
+        ob_end_clean();
         $this->respond($response->withBody($body));
     }
 
+    /**
+     * Turns PHP errors into ErrorExceptions. If error reporting is not enabled,
+     * returns nothing.
+     */
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (!(error_reporting() & $errno)) {
