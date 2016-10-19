@@ -19,25 +19,19 @@ use Students\Helper\StudentAuthorization;
 use Students\Utility\View;
 
 $services['config'] = function($c) {
-    // Initialize configuration class
     $configuration = new Configuration();
-    // Load configuration from 'config.ini' in app root directory.
     $configuration->loadFromFile(__DIR__ . '/../db.ini');
     return $configuration;
 };
 
 $services['pdo'] = function($c) {
-    // Creates a DSN string using values from config.
     $dsn = sprintf("pgsql:host=%s;port=%s;dbname=%s",
         $c['config']->getValue('Database', 'host'),
         $c['config']->getValue('Database', 'port'),
         $c['config']->getValue('Database', 'name'));
-    // Creates a PDO object using DSN string and username\password values from
-    // application config.
     $pdo = new \PDO($dsn,
         $c['config']->getValue('Database', 'username'),
         $c['config']->getValue('Database', 'password'));
-    // Tells PDO to throw an exception if an error occured.
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     return $pdo;
 };

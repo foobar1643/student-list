@@ -11,7 +11,7 @@ tests/*
 
 # Ignore Bootstrap and jQuery
 public/media/bootstrap/*
-public/media/javascript/jquery.*
+public/media/javascript/*
 
 # Ignore design mockups
 templates/mockup/*
