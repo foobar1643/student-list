@@ -26,7 +26,7 @@ namespace Students\Validation;
  * entity.
  *
  * $rules['Student'] // Array index 'Student' represents name of the entity that current ruleset would apply to.
- * If a collision occurs (ruleset with for this entity already exists), validator should raise an exception.
+ * If a collision occurs (ruleset for this entity already exists), validator should raise an exception.
  *
  * $rules['Student']['firstName'] // Array index 'firstName' represents name of the class field that current
  * rule would apply to.
